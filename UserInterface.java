@@ -10,21 +10,21 @@ public class UserInterface {
         Scanner myObj = new Scanner(System.in);
         int choice;
         System.out.println("MAIN MENU");
-        System.out.print("1. Sistem Persamaan Linier\n" +
-                        "2. Determinan\n" +
-                        "3. Matriks Balikan\n" +
-                        "4. Intepolasi Polinom\n" +
-                        "5. Interpolasi Bicubic\n" +
-                        "6. Regresi linier berganda\n" +
-                        "7. Keluar\n");
+        System.out.print("""
+                1. Sistem Persamaan Linier
+                2. Determinan
+                3. Matriks Balikan
+                4. Intepolasi Polinom
+                5. Interpolasi Bicubic
+                6. Regresi linier berganda
+                7. Keluar
+                """);
         System.out.println("Masukan pilihan: ");
         String strchoice = myObj.nextLine();
         choice = Integer.parseInt(strchoice);
 
         switch (choice) {
-            case 1:
-                System.out.println("Hi");
-                break;
+            case 1 -> System.out.println("Hi");
         }
     }
 }
