@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class MatrixOperations {
 
 
-
+    // read from file belum
     public static void readMatrix(float[][] mat) {
         // Procedure to read matrix from user input
         // I.S. mat is defined
