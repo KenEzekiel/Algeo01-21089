@@ -1,6 +1,9 @@
-import java.util.Scanner;
+import java.util.*;
+import java.lang.*;
+import java.io.*;
 
 public class MatrixOperations {
+
 
 
     // read from file belum
@@ -13,7 +16,6 @@ public class MatrixOperations {
         Scanner myObj = new Scanner(System.in);
         int m, n;
         int i, j;
-
 
         // ALGORITHM
         System.out.println("Enter row: ");
@@ -42,7 +44,6 @@ public class MatrixOperations {
         // F.S. mat is printed to the screen
         // LOCAL DICTIONARY
         int i, j;
-
 
         // ALGORITHM
         for (i = 0; i < mat.length; i++) {

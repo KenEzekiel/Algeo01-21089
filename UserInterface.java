@@ -24,7 +24,114 @@ public class UserInterface {
         choice = Integer.parseInt(strchoice);
 
         switch (choice) {
-            case 1 -> System.out.println("Hi");
+            case 1 -> sistemPersamaanLinierMenu();
+            case 2 -> determinanMenu();
+            case 3 -> inversMenu();
+            case 4 -> interPolinomMenu();
+            case 5 -> interBicubicMenu();
+            case 6 -> regLinearBergandaMenu();
+        }
+    }
+
+    public static void sistemPersamaanLinierMenu() {
+        Scanner myObj = new Scanner(System.in);
+        int choice;
+        System.out.println("SISTEM PERSAMAAN LINIER");
+        System.out.print("""
+                1. Metode Eliminasi Gauss
+                2. Metode Eliminasi Gauss-Jordam
+                3. Metode Matriks Balikan
+                4. Metode Cramer
+                """);
+        System.out.println("Masukan pilihan: ");
+        String strchoice = myObj.nextLine();
+        choice = Integer.parseInt(strchoice);
+        switch(choice) {
+
+        }
+    }
+
+    public static void determinanMenu() {
+        Scanner myObj = new Scanner(System.in);
+        int choice;
+        System.out.println("SISTEM PERSAMAAN LINIER");
+        System.out.print("""
+                1. Metode Eliminasi Gauss
+                2. Metode Eliminasi Gauss-Jordam
+                3. Metode Matriks Balikan
+                4. Metode Cramer
+                """);
+        System.out.println("Masukan pilihan: ");
+        String strchoice = myObj.nextLine();
+        choice = Integer.parseInt(strchoice);
+        switch(choice) {
+
+        }
+    }
+
+    public static void inversMenu() {
+        Scanner myObj = new Scanner(System.in);
+        int choice;
+        System.out.println("SISTEM PERSAMAAN LINIER");
+        System.out.print("""
+                1. Metode Eliminasi Gauss
+                2. Metode Eliminasi Gauss-Jordam
+                3. Metode Matriks Balikan
+                4. Metode Cramer
+                """);
+        System.out.println("Masukan pilihan: ");
+        String strchoice = myObj.nextLine();
+        choice = Integer.parseInt(strchoice);
+        switch(choice) {
+
+        }
+    }
+
+    public static void interPolinomMenu() {
+        Scanner myObj = new Scanner(System.in);
+        int choice;
+        System.out.println("SISTEM PERSAMAAN LINIER");
+        System.out.print("""
+                1. Metode Eliminasi Gauss
+                2. Metode Eliminasi Gauss-Jordam
+                3. Metode Matriks Balikan
+                4. Metode Cramer
+                """);
+        System.out.println("Masukan pilihan: ");
+        String strchoice = myObj.nextLine();
+        choice = Integer.parseInt(strchoice);
+        switch(choice) {
+
+        }
+    }
+
+    public static void interBicubicMenu() {
+        Scanner myObj = new Scanner(System.in);
+        int choice;
+        System.out.println("SISTEM PERSAMAAN LINIER");
+        System.out.print("""
+                1. 
+                """);
+        System.out.println("Masukan pilihan: ");
+        String strchoice = myObj.nextLine();
+        choice = Integer.parseInt(strchoice);
+        switch(choice) {
+
+        }
+    }
+
+    public static void regLinearBergandaMenu() {
+        Scanner myObj = new Scanner(System.in);
+        int choice;
+        System.out.println("SISTEM PERSAMAAN LINIER");
+        System.out.print("""
+                1. 
+                """);
+        System.out.println("Masukan pilihan: ");
+        String strchoice = myObj.nextLine();
+        choice = Integer.parseInt(strchoice);
+        switch(choice) {
+
         }
     }
 }
