@@ -1,10 +1,14 @@
+package src;
+
 import java.util.Scanner;
 
 public class UserInterface {
     public static void main(String[] args) {
+        float[][] matrix;
         System.out.println("Welcome to our main program");
         mainMenu();
     }
+
 
     public static void mainMenu() {
         Scanner myObj = new Scanner(System.in);
@@ -52,20 +56,20 @@ public class UserInterface {
     }
 
     public static void determinanMenu() {
+        float[][] matrix = new float[5][5];
         Scanner myObj = new Scanner(System.in);
         int choice;
         System.out.println("SISTEM PERSAMAAN LINIER");
         System.out.print("""
-                1. Metode Eliminasi Gauss
-                2. Metode Eliminasi Gauss-Jordam
-                3. Metode Matriks Balikan
-                4. Metode Cramer
+                1. Metode Reduksi Baris
+                2. Metode Ekspansi Kofaktor
                 """);
         System.out.println("Masukan pilihan: ");
         String strchoice = myObj.nextLine();
         choice = Integer.parseInt(strchoice);
         switch(choice) {
-
+            case 1 -> Matrix.determinanReduksiBaris(matrix);
+            case 2 -> System.out.println("");
         }
     }
 

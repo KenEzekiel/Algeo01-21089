@@ -1,12 +1,35 @@
+package src;
+
 import java.util.*;
 import java.lang.*;
 import java.io.*;
 
-public class MatrixOperations {
+public class Matrix {
+    public static void main(String[] args) {
 
+    }
 
+    public static float[][] inputMatrix() {
+        float[][] matrix;
+        matrix = new float[5][5];
+        Scanner myObj = new Scanner(System.in);
+        int choice;
+        System.out.println("Select matrix input");
+        System.out.print("""
+                1. Keyboard
+                2. File
+                """);
+        System.out.println("Masukan pilihan: ");
+        String strchoice = myObj.nextLine();
+        choice = Integer.parseInt(strchoice);
 
-    // read from file belum
+        switch (choice) {
+            case 1 -> readMatrix(matrix);
+            case 2 -> ReadFromFile.main(matrix);
+        }
+        return matrix;
+    }
+
     public static void readMatrix(float[][] mat) {
         // Procedure to read matrix from user input
         // I.S. mat is defined
