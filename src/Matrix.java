@@ -1,32 +1,46 @@
 package src;
 
 import java.util.*;
-import java.lang.*;
-import java.io.*;
+/*import java.io.*; */
 
 public class Matrix {
-    public static void main(String[] args) {
 
+    /*deklrasi row col*/
+    static Scanner input = new Scanner(System.in);
+    double[][] M;
+    int row;
+    int col;
+
+    /* Konstruktor */
+    public Matrix(int r, int c) {
+        this.M = new double[r][c];
+        this.row = r;
+        this.col = c;
+    
     }
 
     public static float[][] inputMatrix() {
         float[][] matrix;
         matrix = new float[5][5];
-        Scanner myObj = new Scanner(System.in);
-        int choice;
-        System.out.println("Select matrix input");
-        System.out.print("""
-                1. Keyboard
-                2. File
-                """);
-        System.out.println("Masukan pilihan: ");
-        String strchoice = myObj.nextLine();
-        choice = Integer.parseInt(strchoice);
+        try (Scanner myObj = new Scanner(System.in)) {
+			int choice;
+			System.out.println("Select matrix input");
+			System.out.print("""
+			        1. Keyboard
+			        2. File
+			        """);
+			System.out.println("Masukan pilihan: ");
+			String strchoice = myObj.nextLine();
+			choice = Integer.parseInt(strchoice);
 
-        switch (choice) {
-            case 1 -> readMatrix(matrix);
-            case 2 -> ReadFromFile.main(matrix);
-        }
+			switch (choice) {
+			    case 1 -> readMatrix(matrix);
+			    case 2 -> ReadFromFile.main(matrix);
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return matrix;
     }
 
@@ -134,5 +148,207 @@ public class Matrix {
             return mat[0][0] * determinanReduksiBaris(temp);
         }
     }
+    
+    /* GETTER */
+    public int getRow() {
+        return this.row;
+    }
 
+    public int getCol() {
+        return this.col;
+    }
+
+    public double getELMT(int i, int j) {
+        return (this.M[i][j]);
+    }
+	public void copyMatrix(Matrix m1) {
+	}
+    
+    /* OPERANDS */
+    public void switchRow(int i1, int i2) {
+        /* KAMUS LOKAL */
+        int j;
+        double temp;
+        /* ALGORITMA */
+        for (j = 0; j < col; j++) {
+          temp = this.M[i1][j];
+          this.M[i1][j] = this.M[i2][j];
+          this.M[i2][j] = temp;
+        }
+    }
+
+    /* SETTER */
+    public void setELMT(int i, int j, double value) {
+        this.M[i][j] = value;
+    }
+
+    public void rowOperations(int i1, int i2, double k) {
+        int j;
+
+        for (j = 0; j < col; j++) {
+        this.M[i1][j] -= k * this.M[i2][j];
+        }
+    }
+
+    public static void changeZerovalue(Matrix m) {
+        for (int i = 0; i < m.row; i++) {
+        for (int j = 0; j < m.col; j++) {
+            if (m.M[i][j] == -0.0) {
+            m.M[i][j] = Math.abs(m.M[i][j]);
+            }
+        }
+        }
+    }
+    
+    /* Mengecek apakah elemen pada diagonal M bernilai 1 */
+    public static boolean isDiagonalSatu(Matrix M) {
+
+        int i;
+        boolean check = true;
+
+        i = 0;
+        while (i < M.getRow() && check) {
+        if (M.getELMT(i, i) != 1) {
+            check = false;
+        }
+        i++;
+        }
+        return check;
+    }
+
+    /* Mengecek apakah semua elemen pada suatu baris bernilai 0 */
+    public static boolean isRowZero(Matrix M, int row) {
+        int j = 0;
+        boolean check = true;
+
+        while (j < M.getCol() - 1 && check) {
+          if (M.getELMT(row, j) != 0) {
+            check = false;
+          }
+          j++;
+        }
+        return check;
+    }
+    /* Mengecek apakah suatu baris kosong */
+    public static boolean isRowEmpty(Matrix m, int i) {
+        int count = 0;
+        int idx = 0;
+
+        while (count == 0 && idx < m.col) {
+        if (m.M[i][idx] != 0) {
+            count++;
+        }
+        idx++;
+        }
+        return (count == 0);
+    }
+
+    /* Mendapatkan pivot Matrix yang bernilai 1 */
+    public static int getLeadingOne(Matrix M, int row) {
+        /* KAMUS */
+        int j = 0;
+        int idxLead = -1;
+        boolean found = false;
+
+        // Iterasi mencari leading one di tiap baris
+        while (j < M.getCol() && (found == false)) {
+        if (M.getELMT(row, j) == 1) {
+            idxLead = j;
+            found = true;
+        }
+        j++;
+        }
+        return idxLead;
+    }
+
+    // Fungsi untuk menghasilkan array pecahan sebuah parametrik, contoh 1.00t
+    // dipecah menjadi [1.00, t]
+    public static String[] stripNonDigits(String x) {
+        final String[] out = new String[2];
+
+        final StringBuilder sb1 = new StringBuilder(x.length());
+        final StringBuilder sb2 = new StringBuilder(x.length());
+
+        for (int i = 0; i < x.length(); i++) {
+            final char c = x.charAt(i);
+            // Menggunakan ASCII value
+            // Elemen yang diterima: ".", "-", dan angka
+            if ((c == 45) || (c == 46) || (c > 47 && c < 58)) {
+                out[0] = (sb1.append(c)).toString();
+            }
+            // Elemen yang diterima: semua huruf kecil
+            if ((c > 96) && (c < 123)) {
+                out[1] = (sb2.append(c)).toString();
+            }
+        }
+        return (out);
+    }
+
+    /* Membentuk Matrix Koefisien */
+    public static Matrix getMKoef(Matrix m) {
+
+        Matrix mKoef = new Matrix(m.row, m.col - 1);
+        int i, j;
+
+        for (i = 0; i < mKoef.row; i++) {
+            for (j = 0; j < mKoef.col; j++) {
+                mKoef.M[i][j] = m.M[i][j];
+        }
+    }
+    return mKoef;
+  }
+
+    /* Membentuk Matrix Konstanta */
+    public static Matrix getMConst(Matrix m) {
+
+        Matrix mConst = new Matrix(m.row, 1);
+        int i;
+
+        for (i = 0; i < mConst.row; i++) {
+          mConst.M[i][0] = m.M[i][m.col - 1];
+        }
+        return mConst;
+    }
+
+    /* Membentuk Matrix Augmented */
+    public static Matrix createMAug(Matrix koef, Matrix cons) {
+
+    Matrix mAug = new Matrix(koef.row, koef.col + 1);
+
+    for (int i = 0; i < koef.row; i++) {
+      for (int j = 0; j < mAug.col - 1; j++) {
+        mAug.M[i][j] = koef.M[i][j];
+      }
+    }
+    for (int k = 0; k < mAug.row; k++) {
+        mAug.M[k][mAug.col - 1] = cons.M[k][0];
+    }
+    return mAug;
+  }
+    /* Memindahkan baris kosong ke bawah*/
+    public static void switchRowEmpty(Matrix m) {
+        for (int i = 0; i < m.row; i++) {
+          if (isRowEmpty(m, i)) {
+            for (int j = i + 1; j < m.row; j++) {
+              if (!isRowEmpty(m, j)) {
+                m.switchRow(i, j);
+              }
+            }
+          }
+        }
+    }
+
+    /* Mengecheck apakah elemen dibawah elemen (i, j) kosong */
+    public static boolean isUnderEmpty(Matrix m, int i, int j) {
+        int count, iRow;
+        count = 0;
+        iRow = i + 1;
+        while (count == 0 && iRow < m.row) {
+        if (m.M[iRow][j] != 0) {
+            count++;
+        }
+        iRow++;
+        }
+        return (count == 0);
+    }
 }
