@@ -5,7 +5,7 @@ import java.util.*;
 
 public class Matrix {
 
-    /*deklrasi row col*/
+    /*deklarasi row col*/
     static Scanner input = new Scanner(System.in);
     double[][] M;
     int row;
@@ -16,66 +16,63 @@ public class Matrix {
         this.M = new double[r][c];
         this.row = r;
         this.col = c;
-    
     }
 
-    public static float[][] inputMatrix() {
-        float[][] matrix;
-        matrix = new float[5][5];
-        try (Scanner myObj = new Scanner(System.in)) {
-			int choice;
-			System.out.println("Select matrix input");
-			System.out.print("""
-			        1. Keyboard
-			        2. File
-			        """);
-			System.out.println("Masukan pilihan: ");
-			String strchoice = myObj.nextLine();
-			choice = Integer.parseInt(strchoice);
+    public static Matrix inputMatrix() {
 
-			switch (choice) {
-			    case 1 -> readMatrix(matrix);
-			    case 2 -> ReadFromFile.main(matrix);
-			}
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        Scanner myObj = new Scanner(System.in);
+        int choice;
+        System.out.println("Masukkan baris matriks: ");
+        String mInt = myObj.nextLine();
+        System.out.println("Masukkan kolom matriks: ");
+        String nInt = myObj.nextLine();
+
+        int m = Integer.parseInt(mInt);
+        int n = Integer.parseInt(nInt);
+
+        Matrix matrix = new Matrix(m, n);
+
+        System.out.println("Select matrix input");
+        System.out.print("""
+		        1. Keyboard
+		        2. File
+		        """);
+        System.out.println("Masukan pilihan: ");
+        String strchoice = myObj.nextLine();
+        choice = Integer.parseInt(strchoice);
+
+        switch (choice) {
+            case 1 -> readMatrix(matrix, m, n);
+            case 2 -> ReadFromFile.main(matrix, m, n);
+        }
         return matrix;
     }
 
-    public static void readMatrix(float[][] mat) {
+    public static void readMatrix(Matrix mat, int m, int n) {
         // Procedure to read matrix from user input
         // I.S. mat is defined
         // F.S. mat is filled with values of m x n
         // LOCAL DICTIONARY
-        float[][] temp;
+        Matrix temp;
         Scanner myObj = new Scanner(System.in);
-        int m, n;
         int i, j;
 
         // ALGORITHM
-        System.out.println("Enter row: ");
-        String row = myObj.nextLine();
-        m = Integer.parseInt(row);
 
-        System.out.println("Enter col: ");
-        String col = myObj.nextLine();
-        n = Integer.parseInt(col);
+        temp = new Matrix(m, n);
 
-        temp = new float[m][n];
-
+        System.out.println("Enter matrix: ");
         for (i = 0; i < m; i++) {
             for (j = 0; j < n; j++) {
                 String element = myObj.nextLine();
-                temp[i][j] = Float.parseFloat(element);
+                temp.M[i][j] = Double.parseDouble(element);
             }
         }
 
         copyMatrix(temp, mat);
     }
 
-    public static void printMatrix(float[][] mat){
+    public static void printMatrix(Matrix mat){
         // Procedure to print matrix
         // I.S. mat is defined
         // F.S. mat is printed to the screen
@@ -83,70 +80,36 @@ public class Matrix {
         int i, j;
 
         // ALGORITHM
-        for (i = 0; i < mat.length; i++) {
-            for (j = 0; j < mat[0].length; j++) {
-                System.out.print(mat[i][j] + " ");
+        for (i = 0; i < mat.getRow(); i++) {
+            for (j = 0; j < mat.getCol(); j++) {
+                System.out.print(mat.M[i][j] + " ");
             }
             System.out.println();
         }
     }
 
-    public static boolean isSquare(float[][] mat) {
+    public static boolean isSquare(Matrix mat) {
         // Function to determine whether a matrix is a square matrix or not
         // Square matrix : m x n where m = n
 
-        return mat.length == mat[0].length;
+        return mat.getRow() == mat.getCol();
     }
 
-    public static void copyMatrix(float[][] mat1, float[][] mat2) {
+    public static void copyMatrix(Matrix mat1, Matrix mat2) {
         // Procedure to copy a matrix content to another matrix
         // I.S. mat1 and mat2 are defined and with the same order and mat2 can be empty
         // F.S. mat1 is identical with mat2
         // LOCAL DICTIONARY
-        int rowEff = mat1.length;
-        int colEff = mat1[0].length;
+        int rowEff = mat1.getRow();
+        int colEff = mat1.getCol();
         int i, j;
         // ALGORITHM
         for (i = 0; i < rowEff; i++) {
             for (j = 0; j < colEff; j++) {
-                mat2[i][j] = mat1[i][j];
+                mat2.M[i][j] = mat1.M[i][j];
             }
         }
 
-    }
-
-    public static float determinanReduksiBaris(float[][] mat) {
-        // Precondition: isSquare(mat) == true
-        // Finding determinant with Row Reduction (Upper Triangle Matrix)
-        // LOCAL DICTIONARY
-        int rowEff = mat.length;
-        int colEff = mat[0].length;
-        int row = rowEff - 1;
-        int col = colEff - 1;
-        // temp is a temporary matrix to ignore the already zero-ed column
-        float[][] temp = new float[row][col];
-        int i, j;
-        float konst;
-
-        // ALGORITHM
-        // Base
-        // Return the determinant of a 2x2 matrix
-        if (rowEff == 2) {
-            return (mat[0][0] * mat[1][1]) - (mat[0][1] * mat[1][0]);
-        }
-        // Recurrent
-        else {
-            // Multiplying the lower row from with a factor konst
-            // (first element of the n row / first element of the first row) of the top row
-            for (i = 1; i < rowEff; i++) {
-                konst = mat[i][0] / mat[0][0];
-                for (j = 1; j < colEff; j++) {
-                    // Multiplying and saving the element
-                    temp[i - 1][j - 1] = mat[i][j] - konst * mat[0][j];
-                }
-            }
-            return mat[0][0] * determinanReduksiBaris(temp);
-        }
     }
     
     /* GETTER */
@@ -161,8 +124,6 @@ public class Matrix {
     public double getELMT(int i, int j) {
         return (this.M[i][j]);
     }
-	public void copyMatrix(Matrix m1) {
-	}
     
     /* OPERANDS */
     public void switchRow(int i1, int i2) {
@@ -313,23 +274,23 @@ public class Matrix {
     /* Membentuk Matrix Augmented */
     public static Matrix createMAug(Matrix koef, Matrix cons) {
 
-    Matrix mAug = new Matrix(koef.row, koef.col + 1);
+    Matrix mAug = new Matrix(koef.getRow(), koef.getCol() + 1);
 
-    for (int i = 0; i < koef.row; i++) {
-      for (int j = 0; j < mAug.col - 1; j++) {
+    for (int i = 0; i < koef.getRow(); i++) {
+      for (int j = 0; j < mAug.getCol() - 1; j++) {
         mAug.M[i][j] = koef.M[i][j];
       }
     }
-    for (int k = 0; k < mAug.row; k++) {
-        mAug.M[k][mAug.col - 1] = cons.M[k][0];
+    for (int k = 0; k < mAug.getRow(); k++) {
+        mAug.M[k][mAug.getCol() - 1] = cons.M[k][0];
     }
     return mAug;
   }
     /* Memindahkan baris kosong ke bawah*/
     public static void switchRowEmpty(Matrix m) {
-        for (int i = 0; i < m.row; i++) {
+        for (int i = 0; i < m.getRow(); i++) {
           if (isRowEmpty(m, i)) {
-            for (int j = i + 1; j < m.row; j++) {
+            for (int j = i + 1; j < m.getRow(); j++) {
               if (!isRowEmpty(m, j)) {
                 m.switchRow(i, j);
               }
@@ -343,12 +304,46 @@ public class Matrix {
         int count, iRow;
         count = 0;
         iRow = i + 1;
-        while (count == 0 && iRow < m.row) {
+        while (count == 0 && iRow < m.getRow()) {
         if (m.M[iRow][j] != 0) {
             count++;
         }
         iRow++;
         }
         return (count == 0);
+    }
+
+    public static double determinanReduksiBaris(Matrix mat) {
+        // Precondition: isSquare(mat) == true
+        // Finding determinant with Row Reduction (Upper Triangle Matrix)
+        // LOCAL DICTIONARY
+        int rowEff = mat.getRow();
+        int colEff = mat.getCol();
+        int row = rowEff - 1;
+        int col = colEff - 1;
+        // temp is a temporary matrix to ignore the already zero-ed column
+        Matrix temp = new Matrix(row, col);
+        int i, j;
+        double konst;
+
+        // ALGORITHM
+        // Base
+        // Return the determinant of a 2x2 matrix
+        if (rowEff == 2) {
+            return (mat.M[0][0] * mat.M[1][1]) - (mat.M[0][1] * mat.M[1][0]);
+        }
+        // Recurrent
+        else {
+            // Multiplying the lower row from with a factor konst
+            // (first element of the n row / first element of the first row) of the top row
+            for (i = 1; i < rowEff; i++) {
+                konst = mat.M[i][0] / mat.M[0][0];
+                for (j = 1; j < colEff; j++) {
+                    // Multiplying and saving the element
+                    temp.M[i - 1][j - 1] = mat.M[i][j] - konst * mat.M[0][j];
+                }
+            }
+            return mat.M[0][0] * determinanReduksiBaris(temp);
+        }
     }
 }

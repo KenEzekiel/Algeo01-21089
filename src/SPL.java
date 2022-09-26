@@ -16,7 +16,7 @@ public class SPL {
         
         /* ALGORITMA */
         // copy Matriks M ke Matriks M1
-        M.copyMatrix(mHasil);
+        M.copyMatrix(M, mHasil);
 
         // mulai check apakah ada yg perlu dituker dari baris pertama
         // jika elemen diagonalnya 0, maka baris harus ditukar ddengan baris lain
@@ -389,4 +389,5 @@ public class SPL {
 
         return mHasil;
     }
+
 }

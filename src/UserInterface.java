@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class UserInterface {
     public static void main(String[] args) {
-        float[][] matrix;
+        Matrix matrix;
         System.out.println("Welcome to our main program");
         mainMenu();
     }
@@ -38,6 +38,7 @@ public class UserInterface {
     }
 
     public static void sistemPersamaanLinierMenu() {
+        Matrix mat = Matrix.inputMatrix();
         Scanner myObj = new Scanner(System.in);
         int choice;
         System.out.println("SISTEM PERSAMAAN LINIER");
@@ -51,43 +52,58 @@ public class UserInterface {
         String strchoice = myObj.nextLine();
         choice = Integer.parseInt(strchoice);
         switch(choice) {
-
+            case 1 -> SPL.GaussElimination(mat);
+            case 2 -> SPL.elimGaussJordan(mat);
         }
     }
 
     public static void determinanMenu() {
-        float[][] matrix = new float[5][5];
-        Scanner myObj = new Scanner(System.in);
-        int choice;
-        System.out.println("SISTEM PERSAMAAN LINIER");
-        System.out.print("""
-                1. Metode Reduksi Baris
-                2. Metode Ekspansi Kofaktor
-                """);
-        System.out.println("Masukan pilihan: ");
-        String strchoice = myObj.nextLine();
-        choice = Integer.parseInt(strchoice);
-        switch(choice) {
-            case 1 -> Matrix.determinanReduksiBaris(matrix);
-            case 2 -> System.out.println("");
+        Matrix mat = Matrix.inputMatrix();
+        if (mat.isSquare(mat)) {
+            Scanner myObj = new Scanner(System.in);
+            int choice;
+            System.out.println("DETERMINAN MATRIKS");
+            System.out.print("""
+                    1. Metode Reduksi Baris
+                    2. Metode Ekspansi Kofaktor
+                    """);
+            System.out.println("Masukan pilihan: ");
+            String strchoice = myObj.nextLine();
+            choice = Integer.parseInt(strchoice);
+            switch (choice) {
+                case 1:
+                    double det = Matrix.determinanReduksiBaris(mat);
+                    System.out.println(det);
+                case 2:
+                    System.out.println("");
+            }
+        } else {
+            System.out.println("Matriks bukan matriks persegi");
         }
     }
 
     public static void inversMenu() {
-        Scanner myObj = new Scanner(System.in);
-        int choice;
-        System.out.println("SISTEM PERSAMAAN LINIER");
-        System.out.print("""
-                1. Metode Eliminasi Gauss
-                2. Metode Eliminasi Gauss-Jordam
-                3. Metode Matriks Balikan
-                4. Metode Cramer
-                """);
-        System.out.println("Masukan pilihan: ");
-        String strchoice = myObj.nextLine();
-        choice = Integer.parseInt(strchoice);
-        switch(choice) {
-
+        Matrix mat = Matrix.inputMatrix();
+        if (mat.isSquare(mat)) {
+            Scanner myObj = new Scanner(System.in);
+            int choice;
+            System.out.println("INVERS MATRIKS");
+            System.out.print("""
+                    1. Metode Reduksi Baris
+                    2. Metode Ekspansi Kofaktor
+                    """);
+            System.out.println("Masukan pilihan: ");
+            String strchoice = myObj.nextLine();
+            choice = Integer.parseInt(strchoice);
+            switch (choice) {
+                case 1:
+                    double det = Matrix.determinanReduksiBaris(mat);
+                    System.out.println(det);
+                case 2:
+                    System.out.println("");
+            }
+        } else {
+            System.out.println("Matriks bukan matriks persegi");
         }
     }
 
