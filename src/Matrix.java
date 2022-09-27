@@ -148,7 +148,7 @@ public class Matrix {
         int j;
 
         for (j = 0; j < col; j++) {
-        this.M[i1][j] -= k * this.M[i2][j];
+            this.M[i1][j] -= k * this.M[i2][j];
         }
     }
 
@@ -316,6 +316,27 @@ public class Matrix {
         return (count == 0);
     }
 
+    /* Creates identity matrix based on the order of matrix parameter (orderOfMatrix)*/
+    public static Matrix createIdentityMatrix(int orderOfMatrix) {
+        int i, j;
+        Matrix identityMatrix;
+
+        identityMatrix = new Matrix(orderOfMatrix, orderOfMatrix);
+
+        for (i = 0; i < orderOfMatrix; i++) {
+            for (j = 0; j < orderOfMatrix; j++) {
+                if (i == j) {
+                    identityMatrix.setELMT(i, j, 1);
+                }
+                else {
+                    identityMatrix.setELMT(i, j, 0);
+                }
+            }
+        }
+
+        return identityMatrix;
+    }
+
     public static double determinanReduksiBaris(Matrix mat) {
         // Precondition: isSquare(mat) == true
         // Finding determinant with Row Reduction (Upper Triangle Matrix)
@@ -373,30 +394,29 @@ public class Matrix {
 
                     sub_col = 0;
                     for (k = 1; k < M.getCol(); k++) {
-                        if (j != i) {
-                            if (j < i) {
-                                submatrix.setELMT(sub_row, sub_col, M.getELMT(j, k));
-                                sub_col += 1
-                            }
-                            else {
-                                submatrix.setELMT(sub_row - 1, sub_col, M.getELMT(j, k));
-                                sub_col += 1
-                            }
+                        if (j < i) {
+                            submatrix.setELMT(sub_row, sub_col, M.getELMT(j, k));
+                            sub_col += 1;
+                        }
+                        else if (j > i) {
+                            submatrix.setELMT(sub_row - 1, sub_col, M.getELMT(j, k));
+                            sub_col += 1;
                         }
                     }
                     sub_row += 1;
                 }
-                determinant += Math.pow(-1, i) * M.getELMT(i, 0) * determinantUsingCofactorExpansion(submatrix);
             }
-            return determinant;
+            determinant += Math.pow(-1, i) * M.getELMT(i, 0) * determinantUsingCofactorExpansion(submatrix);
         }
+        return determinant;
     }
 
-    // Finds the determinant of matrix using Gauss-Jordan Elimination
+    /* Finds the determinant of matrix using Gauss-Jordan Elimination */
     public static Matrix findInverse(Matrix M) {
 
 
-
+        return M;
     }
-
 }
+
+
