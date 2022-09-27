@@ -390,4 +390,12 @@ public class SPL {
         return mHasil;
     }
 
+    /* Solving a system of linear equations using the inverse matrix*/
+    /* Finding the solution matrix for the system of linear equations*/
+    public static Matrix findSolutionMatrixUsingInverse(Matrix M) {
+
+
+
+    }
+
 }

@@ -1,6 +1,7 @@
 package src;
 
 import java.util.*;
+import java.lang.Math;
 /*import java.io.*; */
 
 public class Matrix {
@@ -169,10 +170,10 @@ public class Matrix {
 
         i = 0;
         while (i < M.getRow() && check) {
-        if (M.getELMT(i, i) != 1) {
-            check = false;
-        }
-        i++;
+            if (M.getELMT(i, i) != 1) {
+                check = false;
+            }
+            i++;
         }
         return check;
     }
@@ -190,6 +191,7 @@ public class Matrix {
         }
         return check;
     }
+
     /* Mengecek apakah suatu baris kosong */
     public static boolean isRowEmpty(Matrix m, int i) {
         int count = 0;
@@ -286,6 +288,7 @@ public class Matrix {
     }
     return mAug;
   }
+
     /* Memindahkan baris kosong ke bawah*/
     public static void switchRowEmpty(Matrix m) {
         for (int i = 0; i < m.getRow(); i++) {
@@ -346,4 +349,54 @@ public class Matrix {
             return mat.M[0][0] * determinanReduksiBaris(temp);
         }
     }
+
+    public static double determinantUsingCofactorExpansion(Matrix M) {
+        // Precondition: isSquare(M) == true
+        // Finding determinant with cofactor expansion method
+        // LOCAL DICTIONARY
+        double determinant;
+        Matrix submatrix;
+        int i, j, k, sub_row, sub_col;
+
+        // ALGORITHM
+        if (M.getRow() == 1) {
+            return M.getELMT(0, 0);
+        }
+        else {
+            determinant = 0;
+
+            for (i = 0; i < M.getRow(); i++) {
+                submatrix = new Matrix(M.getRow() - 1, M.getCol() - 1);
+
+                sub_row = 0;
+                for (j = 0; j < M.getRow(); j++) {
+
+                    sub_col = 0;
+                    for (k = 1; k < M.getCol(); k++) {
+                        if (j != i) {
+                            if (j < i) {
+                                submatrix.setELMT(sub_row, sub_col, M.getELMT(j, k));
+                                sub_col += 1
+                            }
+                            else {
+                                submatrix.setELMT(sub_row - 1, sub_col, M.getELMT(j, k));
+                                sub_col += 1
+                            }
+                        }
+                    }
+                    sub_row += 1;
+                }
+                determinant += Math.pow(-1, i) * M.getELMT(i, 0) * determinantUsingCofactorExpansion(submatrix);
+            }
+            return determinant;
+        }
+    }
+
+    // Finds the determinant of matrix using Gauss-Jordan Elimination
+    public static Matrix findInverse(Matrix M) {
+
+
+
+    }
+
 }
