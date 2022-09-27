@@ -405,18 +405,17 @@ public class Matrix {
                     }
                     sub_row += 1;
                 }
+                determinant += Math.pow(-1, i) * M.getELMT(i, 0) * determinantUsingCofactorExpansion(submatrix);
             }
-            determinant += Math.pow(-1, i) * M.getELMT(i, 0) * determinantUsingCofactorExpansion(submatrix);
+            return determinant;
         }
-        return determinant;
     }
 
     /* Finds the determinant of matrix using Gauss-Jordan Elimination */
     public static Matrix findInverse(Matrix M) {
 
 
+
         return M;
     }
 }
-
-
