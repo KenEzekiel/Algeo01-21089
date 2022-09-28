@@ -139,6 +139,27 @@ public class Matrix {
         }
     }
 
+    public static Matrix Multiply(Matrix A, Matrix B) {
+        /*LOCAL DICTIONARY*/
+        Matrix C;
+        int i, j, k;
+        /*ALGORITHM*/
+        C = new Matrix(A.getRow(), B.getCol());
+
+        for (i = 0; i < C.getRow(); i++)
+        {
+            for (j = 0; j < C.getCol(); j++)
+            {
+                C.M[i][j] = 0;
+                for (k = 0; k < A.getCol(); k++)
+                {
+                    C.M[i][j] += A.M[i][k] * B.M[k][j];
+                }
+            }
+        }
+        return C;
+    }
+
     /* SETTER */
     public void setELMT(int i, int j, double value) {
         this.M[i][j] = value;
