@@ -35,7 +35,7 @@ public class InterpolasiBikubik {
     }
 
     public static void getMatrixA(Matrix Fungsi, Matrix XVar, Matrix AVar) {
-        AVar = Matrix.Multiply(Matrix.findInverse(XVar), Fungsi);
+        AVar = Matrix.Multiply(Matrix.inverseSPL(XVar), Fungsi);
     }
 
     public static void getMatrixF(Matrix Fungsi, Matrix M) {

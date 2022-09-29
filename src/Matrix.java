@@ -97,14 +97,12 @@ public class Matrix {
     }
 
     public static void copyMatrix(Matrix mat1, Matrix mat2) {
-        // Procedure to copy a matrix content to another matrix
-        // I.S. mat1 and mat2 are defined and with the same order and mat2 can be empty
-        // F.S. mat1 is identical with mat2
-        // LOCAL DICTIONARY
+        // M2 merupakan hasil copy matrix M1
+
         int rowEff = mat1.getRow();
         int colEff = mat1.getCol();
         int i, j;
-        // ALGORITHM
+
         for (i = 0; i < rowEff; i++) {
             for (j = 0; j < colEff; j++) {
                 mat2.M[i][j] = mat1.M[i][j];
@@ -173,7 +171,7 @@ public class Matrix {
         }
     }
 
-    public static void changeZerovalue(Matrix m) {
+    public static void changeZeroval(Matrix m) {
         for (int i = 0; i < m.row; i++) {
         for (int j = 0; j < m.col; j++) {
             if (m.M[i][j] == -0.0) {
@@ -323,6 +321,11 @@ public class Matrix {
         }
     }
 
+    public int Size() {
+        /* ALGORITMA */
+        return (this.row * this.col);
+    }
+
     /* Mengecheck apakah elemen dibawah elemen (i, j) kosong */
     public static boolean isUnderEmpty(Matrix m, int i, int j) {
         int count, iRow;
@@ -356,6 +359,19 @@ public class Matrix {
         }
 
         return identityMatrix;
+    }
+
+    public Matrix transpose(Matrix M) {
+        /* KAMUS LOKAL */
+        int i, j;
+        Matrix Mout = new Matrix(M.getRow(), M.getCol());
+        /* ALGORITMA */
+        for (i = 0; i < M.getRow(); i++) {
+          for (j = 0; j < M.getCol(); j++) {
+            Mout.setELMT(j, i, M.getELMT(i, j));
+          }
+        }
+        return Mout;
     }
 
     public static double determinanReduksiBaris(Matrix mat) {
@@ -432,11 +448,89 @@ public class Matrix {
         }
     }
 
-    /* Finds the determinant of matrix using Gauss-Jordan Elimination */
-    public static Matrix findInverse(Matrix M) {
-
-
-
-        return M;
+    public void setIdentitas() {
+        // Mengubah matriks menjadi matriks identitas
+        for (int i = 0; i < row; i++) {
+          for (int j = 0; j < col; j++) {
+            if (i == j) {
+              this.M[i][j] = 1.0f;
+            } else {
+              this.M[i][j] = 0.0f;
+            }
+          }
+        }
     }
+
+    public void divRow(int i, double k) 
+    // membagi elemen pada row dgn konstanta k
+    {
+        /* KAMUS LOKAL */
+        int j;
+        /* ALGORITMA */
+        for (j = 0; j < col; j++) {
+          this.M[i][j] /= k;
+        }
+    }
+
+    public void operationRow(int i1, int i2, double k) {
+        /* KAMUS LOKAL */
+        int j;
+        /* ALGORITMA */
+        for (j = 0; j < col; j++) {
+          this.M[i1][j] -= k * this.M[i2][j];
+        }
+      }
+
+  public static Matrix InverseDgnGauss(Matrix M) {
+    /* KAMUS LOKAL */
+    int i, j, k;
+    Matrix Mkiri = new Matrix(M.getRow(), M.getCol());
+    Matrix Mkanan = new Matrix(M.getRow(), M.getCol());
+
+    /* ALGORITMA */
+    copyMatrix(M, Mkiri);
+    copyMatrix(M, Mkanan);
+    // Matrix kanan dijadikan matrix identitas
+    Mkanan.setIdentitas();
+    for (i = 0; i < Mkiri.getRow(); i++) {
+      // Melakukan pertukaran jika elemen diagonal ada yang 0
+      if (Mkiri.getELMT(i, i) == 0) {
+        boolean check = true;
+        k = i + 1;
+        while (k < Mkiri.getRow() && check) {
+          if (Mkiri.getELMT(k, i) != 0) {
+            Mkanan.switchRow(i, k);
+            Mkiri.switchRow(i, k);
+            check = false;
+          }
+        }
+      }
+
+      // Melakukan pembagian koefisien jika pivot != 1
+      if (Mkiri.getELMT(i, i) != 1) {
+        Mkanan.divRow(i, Mkiri.getELMT(i, i));
+        Mkiri.divRow(i, Mkiri.getELMT(i, i));
+      }
+      // Melakukan OBE pada pivot
+      for (j = 0; j < Mkiri.getRow(); j++) {
+        if (Mkiri.getELMT(j, i) != 0 && i != j) {
+          Mkanan.operationRow(j, i, Mkiri.getELMT(j, i));
+          Mkiri.operationRow(j, i, Mkiri.getELMT(j, i));
+        }
+      }
+    }
+    // Menghilangkan -0.0
+    Matrix.changeZeroval(Mkanan);
+    return Mkanan;
+  }
+
+  public static Matrix findInverse(Matrix M) {
+
+    return M;
+}
+
+public static Matrix inverseSPL(Matrix xVar) {
+    return null;
+}
+      
 }

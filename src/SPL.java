@@ -103,7 +103,7 @@ public class SPL {
                 }
             }
         }
-        Matrix.changeZerovalue(mHasil);
+        Matrix.changeZeroval(mHasil);
         return mHasil;
     }
 
@@ -385,18 +385,43 @@ public class SPL {
 
         mHasil = Matrix.createMAug(mKoef, mConst);
         Matrix.switchRowEmpty(mHasil);
-        Matrix.changeZerovalue(mHasil);
+        Matrix.changeZeroval(mHasil);
 
         return mHasil;
     }
 
-    /* Solving a system of linear equations using the inverse matrix*/
-    /* Finding the solution matrix for the system of linear equations*/
-    public static Matrix findSolutionMatrixUsingInverse(Matrix M) {
+    public static Matrix Cramer(Matrix M) {
+        /* KAMUS LOKAL */
+        double detCramer, detM;
+        Matrix mHasil, koef;
+        int k, i;
 
+        /* ALGORITMA */
+        mHasil = new Matrix(M.getRow(), 1);
+        koef = Matrix.getMKoef(M);
+        detM = Matrix.determinanReduksiBaris(koef);
 
-
-        return M;
+        for (k = 0; k < M.getCol() - 1; k++) {
+            koef = Matrix.getMKoef(M);
+            for (i = 0; i < M.getRow(); i++) {
+                koef.setELMT(i, k, M.getELMT(i, M.getCol() - 1));
+            }
+            detCramer = Matrix.determinanReduksiBaris(koef);
+            mHasil.setELMT(k, 0, detCramer / detM);
+        }
+        return mHasil;
     }
-
+    
+    public static Matrix inverseSPL(Matrix M) {
+        /* KAMUS LOKAL */
+        Matrix kons = new Matrix(M.getRow(), 1);
+        Matrix koef = new Matrix(M.getRow(), M.getCol() - 1);
+        Matrix mHasil;
+        /* ALGORITMA */
+        kons = Matrix.getMConst(M);
+        koef = Matrix.getMKoef(M);
+        koef = Matrix.InverseDgnGauss(koef);
+        mHasil = Matrix.Multiply(koef, kons);
+        return mHasil;
+    }
 }
