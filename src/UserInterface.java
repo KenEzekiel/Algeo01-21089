@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class UserInterface {
     public static void main(String[] args) {
         Matrix matrix;
-        System.out.println("Welcome to our main program");
+        System.out.println("Welcome to our main program!\n");
         mainMenu();
     }
 
@@ -73,9 +73,12 @@ public class UserInterface {
             switch (choice) {
                 case 1:
                     double det = Matrix.determinanReduksiBaris(mat);
-                    System.out.println(det);
+                    System.out.printf("Determinan dari matriks adalah %f", det);
+                    break;
                 case 2:
-                    System.out.println("");
+                    double determinant = Matrix.determinantUsingCofactorExpansion(mat);
+                    System.out.printf("Determinan dari matriks adalah %f", determinant);
+                    break;
             }
         } else {
             System.out.println("Matriks bukan matriks persegi");
@@ -99,8 +102,10 @@ public class UserInterface {
                 case 1:
                     double det = Matrix.determinanReduksiBaris(mat);
                     System.out.println(det);
+                    break;
                 case 2:
                     System.out.println("");
+                    break;
             }
         } else {
             System.out.println("Matriks bukan matriks persegi");
@@ -108,21 +113,7 @@ public class UserInterface {
     }
 
     public static void interPolinomMenu() {
-        Scanner myObj = new Scanner(System.in);
-        int choice;
-        System.out.println("SISTEM PERSAMAAN LINIER");
-        System.out.print("""
-                1. Metode Eliminasi Gauss
-                2. Metode Eliminasi Gauss-Jordam
-                3. Metode Matriks Balikan
-                4. Metode Cramer
-                """);
-        System.out.println("Masukan pilihan: ");
-        String strchoice = myObj.nextLine();
-        choice = Integer.parseInt(strchoice);
-        switch(choice) {
-
-        }
+        PolynomialInterpolation.main();
     }
 
     public static void interBicubicMenu() {

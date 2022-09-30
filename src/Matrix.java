@@ -23,9 +23,9 @@ public class Matrix {
 
         Scanner myObj = new Scanner(System.in);
         int choice;
-        System.out.println("Masukkan baris matriks: ");
+        System.out.println("Masukkan jumlah baris matriks: ");
         String mInt = myObj.nextLine();
-        System.out.println("Masukkan kolom matriks: ");
+        System.out.println("Masukkan jumlah kolom matriks: ");
         String nInt = myObj.nextLine();
 
         int m = Integer.parseInt(mInt);
