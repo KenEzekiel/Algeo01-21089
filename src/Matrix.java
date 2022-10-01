@@ -1,5 +1,6 @@
 package src;
 
+import java.io.File;
 import java.util.*;
 import java.lang.Math;
 /*import java.io.*; */
@@ -14,10 +15,11 @@ public class Matrix {
 
     /* Konstruktor */
     public Matrix(int r, int c) {
-        this.M = new double[r][c];
         this.row = r;
         this.col = c;
+        this.M = new double[r][c];
     }
+
 
     public static Matrix inputMatrix() {
 
@@ -43,10 +45,79 @@ public class Matrix {
         choice = Integer.parseInt(strchoice);
 
         switch (choice) {
-            case 1 -> readMatrixPerLine(matrix, m, n);
-            case 2 -> ReadFromFile.main(matrix, m, n);
+            case 1 :
+                matrix = inputMatrixFromKeyboard();
+                break;
+            case 2 :
+                System.out.println("input file name: ");
+                File file = new File(myObj.nextLine());
+                matrix = InputOutput.fileToMatrix(file);
+                break;
         }
         return matrix;
+    }
+
+    public static Matrix inputSquareMatrix() {
+
+        Scanner myObj = new Scanner(System.in);
+        int choice;
+        System.out.println("Masukkan n: ");
+        String nInt = myObj.nextLine();
+
+        int n = Integer.parseInt(nInt);
+
+        Matrix matrix = new Matrix(n, n);
+
+        System.out.println("Select matrix input");
+        System.out.print("""
+		        1. Keyboard
+		        2. File
+		        """);
+        System.out.println("Masukan pilihan: ");
+        String strchoice = myObj.nextLine();
+        choice = Integer.parseInt(strchoice);
+
+        switch (choice) {
+            case 1 :
+                matrix = inputMatrixFromKeyboard();
+                boolean check = (matrix.getRow() == n) && (matrix.getCol() == n);
+                while (!check) {
+                    System.out.println("Masukan tidak valid");
+                    matrix = inputMatrixFromKeyboard();
+                    check = (matrix.getRow() == n) && (matrix.getCol() == n);
+                }
+                break;
+            case 2 :
+                System.out.println("input file name: ");
+                File file = new File(myObj.nextLine());
+                matrix = InputOutput.fileToMatrix(file);
+                break;
+        }
+        return matrix;
+    }
+    public static Matrix inputMatrixFromKeyboard() {
+        boolean loop = true;
+        Scanner in = new Scanner(System.in);
+        String data;
+        String out = "";
+
+        while (loop) {
+            data = in.nextLine();
+            if (data.isEmpty()) {
+                loop = false;
+            } else {
+                out += data + "\n";
+            }
+        }
+        return InputOutput.stringToMatrix(out);
+    }
+
+
+    public final void inputDataFromDouble(double[][] data) {
+        // Function to set the data of a matrix
+        this.row = data.length;
+        this.col = data.length > 0 ? data[0].length : 0;
+        this.M = data;
     }
 
     public static void readMatrixPerLine(Matrix mat, int m, int n) {
@@ -106,12 +177,6 @@ public class Matrix {
             }
         }
         return hasil;
-    }
-
-    public static void main(String[] args) {
-        Matrix hasil = readMatrixPerRow();
-
-        printMatrix(hasil);
     }
 
     public static void printMatrix(Matrix mat){

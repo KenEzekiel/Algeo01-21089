@@ -60,8 +60,10 @@ public class UserInterface {
     }
 
     public static void determinanMenu() {
-        Matrix mat = Matrix.inputMatrix();
-        if (mat.isSquare(mat)) {
+        Scanner in = new Scanner(System.in);
+        Matrix mat = Matrix.inputSquareMatrix();
+        Matrix.printMatrix(mat);
+        if (Matrix.isSquare(mat)) {
             Scanner myObj = new Scanner(System.in);
             int choice;
             System.out.println("DETERMINAN MATRIKS");
