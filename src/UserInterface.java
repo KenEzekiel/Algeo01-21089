@@ -78,7 +78,7 @@ public class UserInterface {
                     System.out.printf("Determinan dari matriks adalah %f", det);
                     break;
                 case 2:
-                    double determinant = Matrix.determinantUsingCofactorExpansion(mat);
+                    double determinant = Matrix.findDeterminantUsingCofactorExpansion(mat);
                     System.out.printf("Determinan dari matriks adalah %f", determinant);
                     break;
             }

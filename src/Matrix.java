@@ -402,7 +402,7 @@ public class Matrix {
         return identityMatrix;
     }
 
-    public Matrix transpose(Matrix M) {
+    public static Matrix transpose(Matrix M) {
         /* KAMUS LOKAL */
         int i, j;
         Matrix Mout = new Matrix(M.getRow(), M.getCol());
@@ -449,10 +449,11 @@ public class Matrix {
         }
     }
 
-    public static double determinantUsingCofactorExpansion(Matrix M) {
+    /* Returns the determinant of parameter Matrix M using confactor expansion method */
+    public static double findDeterminantUsingCofactorExpansion(Matrix M) {
         // Precondition: isSquare(M) == true
         // Finding determinant with cofactor expansion method
-        // LOCAL DICTIONARY
+        // DICTIONARY
         double determinant;
         Matrix submatrix;
         int i, j, k, sub_row, sub_col;
@@ -483,10 +484,69 @@ public class Matrix {
                     }
                     sub_row += 1;
                 }
-                determinant += Math.pow(-1, i) * M.getELMT(i, 0) * determinantUsingCofactorExpansion(submatrix);
+                determinant += Math.pow(-1, i) * M.getELMT(i, 0) * findDeterminantUsingCofactorExpansion(submatrix);
             }
             return determinant;
         }
+    }
+
+    /* Returns the inverse matrix of parameter Matrix M with the formula (1/det(M)) * Adjugate(M) */
+    public static Matrix findInverseUsingAdjugate(Matrix M) {
+        // DICTIONARY
+        Matrix adjugate, inverse;
+        double determinant;
+        int i, j;
+
+        // ALGORITHM
+        determinant = findDeterminantUsingCofactorExpansion(M);
+        adjugate = transpose(findCofactorMatrix(M));
+        inverse = new Matrix(M.getRow(), M.getCol());
+
+        for (i = 0; i < M.getRow(); i++) {
+            for (j = 0; j < M.getCol(); j++) {
+                inverse.setELMT(i, j, (1 / determinant) * adjugate.getELMT(i, j));
+            }
+        }
+
+        return inverse;
+    }
+
+    /* Returns the cofactor matrix of the parameter Matrix M */
+    public static Matrix findCofactorMatrix(Matrix M) {
+        // DICTIONARY
+        Matrix submatrix, cofactorMatrix;
+        int i, j, k, l;
+
+        // ALGORITHM
+        cofactorMatrix = new Matrix(M.getRow(), M.getCol());
+
+        for (i = 0; i < M.getRow(); i++) {
+            for (j = 0; j < M.getCol(); j++) {
+
+                submatrix = new Matrix(M.getRow() - 1, M.getCol() - 1);
+                for (k = 0; k < M.getRow(); k++) {
+
+                    for (l = 0; l < M.getCol(); l++) {
+                        if (k < i && l < j) {
+                            submatrix.setELMT(k, l, M.getELMT(k, l));
+                        }
+                        else if (k < i && l > j) {
+                            submatrix.setELMT(k, l - 1, M.getELMT(k, l));
+                        }
+                        else if (k > i && l < j) {
+                            submatrix.setELMT(k - 1, l, M.getELMT(k, l));
+                        }
+                        else if (k > i && l > j) {
+                            submatrix.setELMT(k - 1, l - 1, M.getELMT(k, l));
+                        }
+                    }
+                }
+
+                cofactorMatrix.setELMT(i, j, Math.pow(-1, (i + j)) * findDeterminantUsingCofactorExpansion(submatrix));
+            }
+        }
+
+        return cofactorMatrix;
     }
 
     public void setIdentitas() {
