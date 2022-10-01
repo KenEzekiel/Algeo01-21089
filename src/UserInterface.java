@@ -54,6 +54,8 @@ public class UserInterface {
         switch(choice) {
             case 1 -> SPL.GaussElimination(mat);
             case 2 -> SPL.elimGaussJordan(mat);
+            case 3 -> SPL.inverseSPL(mat);
+            case 4 -> SPL.Cramer(mat);
         }
     }
 

@@ -9,7 +9,7 @@ public class InterpolasiBikubik {
 
     public static void main(String[] args) {
         Matrix bikubik = new Matrix(4, 4);
-        Matrix.readMatrix(bikubik, bikubik.getRow(), bikubik.getCol());
+        Matrix.readMatrixPerLine(bikubik, bikubik.getRow(), bikubik.getCol());
         Scanner myObj = new Scanner(System.in);
         double x, y;
 

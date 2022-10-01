@@ -43,13 +43,13 @@ public class Matrix {
         choice = Integer.parseInt(strchoice);
 
         switch (choice) {
-            case 1 -> readMatrix(matrix, m, n);
+            case 1 -> readMatrixPerLine(matrix, m, n);
             case 2 -> ReadFromFile.main(matrix, m, n);
         }
         return matrix;
     }
 
-    public static void readMatrix(Matrix mat, int m, int n) {
+    public static void readMatrixPerLine(Matrix mat, int m, int n) {
         // Procedure to read matrix from user input
         // I.S. mat is defined
         // F.S. mat is filled with values of m x n
@@ -71,6 +71,47 @@ public class Matrix {
         }
 
         copyMatrix(temp, mat);
+    }
+
+    public static Matrix readMatrixPerRow() {
+        int n = 0;
+        int m = 0;
+        double[][] newmat = new double[n][n];
+        Scanner in = new Scanner(System.in);
+        boolean loop = true;
+        while (loop) {
+            n++;
+            String[] data = in.nextLine().split(" ");
+            double[] numbers = new double[data.length];
+            m = data.length;
+            System.out.println(m);
+            if (m == 1) {
+                System.out.println("Kosong");
+                loop = false;
+                n--;
+                break;
+            }
+            for (int i = 0; i < data.length; i++) {
+                    numbers[i] = Double.parseDouble(data[i]);
+            }
+            newmat = new double[n][data.length];
+            newmat[n-1] = numbers;
+            System.out.println(Arrays.toString(numbers));
+        }
+        Matrix hasil = new Matrix(n, m);
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                hasil.M[i][j] = newmat[i][j];
+            }
+        }
+        return hasil;
+    }
+
+    public static void main(String[] args) {
+        Matrix hasil = readMatrixPerRow();
+
+        printMatrix(hasil);
     }
 
     public static void printMatrix(Matrix mat){
