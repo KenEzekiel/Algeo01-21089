@@ -1,5 +1,6 @@
 package src;
 
+import java.io.File;
 import java.util.Scanner;
 
 public class InterpolasiBikubik {
@@ -9,7 +10,7 @@ public class InterpolasiBikubik {
 
     public static void main(String[] args) {
         Matrix bikubik = new Matrix(4, 4);
-        Matrix.readMatrixPerLine(bikubik, bikubik.getRow(), bikubik.getCol());
+        bikubik = InputOutput.fileToMatrix(new File("./bikubik"));
         Scanner myObj = new Scanner(System.in);
         double x, y;
 
@@ -26,10 +27,9 @@ public class InterpolasiBikubik {
 
         Matrix X = new Matrix(16, 16);
         getMatrixX(X);
-
-        Matrix A = new Matrix(16, 1);
-        getMatrixA(func, X, A);
-
+        System.out.println("i");
+        Matrix A = getMatrixA(func, X);
+        System.out.println("h");
         double hasil = getValue(A, x, y);
         System.out.println("Hasil : " + hasil);
     }
@@ -59,8 +59,10 @@ public class InterpolasiBikubik {
         return row;
     }
 
-    public static void getMatrixA(Matrix Fungsi, Matrix XVar, Matrix AVar) {
-        AVar = Matrix.Multiply(Matrix.InverseDgnGauss(XVar), Fungsi);
+    public static Matrix getMatrixA(Matrix Fungsi, Matrix XVar) {
+        Matrix inv = Matrix.findInverseUsingAdjugate(XVar);
+        Matrix AVar = Matrix.Multiply(inv, Fungsi);
+        return AVar;
     }
 
     public static void getMatrixF(Matrix Fungsi, Matrix M) {

@@ -20,7 +20,13 @@ public class Matrix {
         this.M = new double[r][c];
     }
 
+    public static void main(String[] args) {
+        Matrix m = inputMatrixFromKeyboard();
+        Matrix i = Multiply(m, m);
 
+        printMatrix(m);
+        printMatrix(i);
+    }
     public static Matrix inputMatrix() {
 
         Scanner myObj = new Scanner(System.in);
@@ -101,6 +107,7 @@ public class Matrix {
         String data;
         String out = "";
 
+        System.out.println("Masukan matriks dipisahkan oleh spasi");
         while (loop) {
             data = in.nextLine();
             if (data.isEmpty()) {
