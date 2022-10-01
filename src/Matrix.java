@@ -9,7 +9,7 @@ public class Matrix {
 
     /*deklarasi row col*/
     static Scanner input = new Scanner(System.in);
-    double[][] M;
+    static double[][] M;
     int row;
     int col;
 
@@ -126,7 +126,16 @@ public class Matrix {
         this.col = data.length > 0 ? data[0].length : 0;
         this.M = data;
     }
-
+    public void readMatrix() {
+        /* KAMUS LOKAL */
+        int i, j;
+        /* ALGORITMA */
+        for (i = 0; i < this.row; i++) {
+          for (j = 0; j < this.col; j++) {
+            this.M[i][j] = input.nextDouble();
+          }
+        }
+      }
     public static void readMatrixPerLine(Matrix mat, int m, int n) {
         // Procedure to read matrix from user input
         // I.S. mat is defined
@@ -249,6 +258,32 @@ public class Matrix {
           this.M[i2][j] = temp;
         }
     }
+
+    public void displayMatrix() {
+        /* KAMUS LOKAL */
+        int i, j;
+        /* ALGORITMA */
+        for (i = 0; i < this.row; i++) {
+          for (j = 0; j < this.col; j++) {
+            System.out.print(M[i][j]);
+            if (j != this.col - 1) {
+              System.out.print(" ");
+            }
+          }
+          System.out.println();
+        }
+        System.out.println();
+      }
+
+    public void readMatrixRegresi(int N) {
+        /* KAMUS LOKAL */
+        int i;
+        /* ALGORITMA */
+        for (i = 0; i < N; i++) {
+          System.out.print(">X" + (i + 1) + ": ");
+          this.M[0][i] = input.nextDouble();
+        }
+      }
 
     public static Matrix Multiply(Matrix A, Matrix B) {
         /*LOCAL DICTIONARY*/

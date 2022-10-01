@@ -1,4 +1,10 @@
 package src;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 
 public class RegresiLinier {
 
@@ -61,4 +67,5 @@ public class RegresiLinier {
       m = "Hasil taksiran regresi adalah: " + taksiran;
       System.out.println(m);
     }
+    
 }
