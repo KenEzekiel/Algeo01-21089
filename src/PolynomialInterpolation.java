@@ -111,7 +111,7 @@ public class PolynomialInterpolation {
 
         // ALGORITHM
         while (true) {
-            System.out.println("Masukkan nama file (dengan relative path yang sesuai dari path eksekusi program). Contoh: \"src/points.txt\":");
+            System.out.println("Masukkan nama file (dengan relative path yang sesuai dari path eksekusi program). Contoh: \"test/points.txt\":");
             try {
                 fileName = fileNameScanner.nextLine();
                 break;
