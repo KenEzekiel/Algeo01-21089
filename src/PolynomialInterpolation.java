@@ -32,10 +32,12 @@ public class PolynomialInterpolation {
                 checkChoiceBetweenOneOrTwo(choice);
                 break;
             }
+            // Handles if the input is not an integer
             catch (InputMismatchException e) {
                 System.out.println("Input salah.");
                 choiceScanner.next();
             }
+            // Handles if the input is an integer, but not 1 or 2
             catch (IOException e) {
                 System.out.println("Input salah.");
             }
