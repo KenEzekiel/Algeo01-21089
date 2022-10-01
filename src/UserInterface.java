@@ -1,10 +1,14 @@
 package src;
 
 import java.util.Scanner;
+import java.util.*;
 
 public class UserInterface {
+    static Scanner in = new Scanner(System.in);
+    static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
         Matrix matrix;
+        int m, n;
         System.out.println("Welcome to our main program!\n");
         mainMenu();
     }
@@ -134,19 +138,45 @@ public class UserInterface {
 
         }
     }
-
+    public static void displayType() {
+        System.out.println();
+        System.out.println("Pilih tipe masukan");
+        System.out.println("1. Keyboard");
+        System.out.println("2. File");
+        System.out.print("Masukkan: ");
+      }
     public static void regLinearBergandaMenu() {
-        Scanner myObj = new Scanner(System.in);
-        int choice;
-        System.out.println("SISTEM PERSAMAAN LINIER");
-        System.out.print("""
-                1. 
-                """);
-        System.out.println("Masukan pilihan: ");
-        String strchoice = myObj.nextLine();
-        choice = Integer.parseInt(strchoice);
-        switch(choice) {
+        //int choice;
+        int m, n, type;
+        Matrix a, k;
+        InputOutput f;
 
+        displayType();
+        type = sc.nextInt();
+        if (type == 1) {
+            System.out.print(">Masukkan jumlah peubah x: ");
+            n = sc.nextInt();
+            System.out.print(">Masukkan jumlah data sampel: ");
+            m = sc.nextInt();
+            System.out.println(">Masukkan data sampel: ");
+            a = new Matrix(m, n + 1);
+            a.readMatrix();
+            System.out.println(">Masukkan nilai X yang akan ditaksir: ");
+            k = new Matrix(1, n);
+            k.readMatrix();
+        } 
+        else {
+            System.out.print("Masukkan path file: ");
+            String path = in.nextLine();
+            f = new InputOutput(path);
+            a = f.readFile();
+            k = new Matrix(1, a.getCol() - 1);
+            System.out.println("Masukkan nilai X yang akan ditaksir: ");
+            k.readMatrixRegresi(a.getCol() - 1);
         }
+        RegresiLinier.regresiGandaSPL(a, k);
+    }
+    private static int nextInt() {
+        return 0;
     }
 }
