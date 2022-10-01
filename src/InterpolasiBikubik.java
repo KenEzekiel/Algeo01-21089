@@ -1,12 +1,37 @@
 package src;
 
-public class InterpolasiBikubik {
-    Matrix M;
+import java.util.Scanner;
 
-    Matrix F, X, A;
+public class InterpolasiBikubik {
+    //Matrix M;
+
+    //Matrix F, X, A;
 
     public static void main(String[] args) {
+        Matrix bikubik = new Matrix(4, 4);
+        Matrix.readMatrix(bikubik, bikubik.getRow(), bikubik.getCol());
+        Scanner myObj = new Scanner(System.in);
+        double x, y;
 
+        System.out.println("enter x: ");
+        String elementx = myObj.nextLine();
+        x = Double.parseDouble(elementx);
+
+        System.out.println("enter y: ");
+        String elementy = myObj.nextLine();
+        y = Double.parseDouble(elementy);
+
+        Matrix func = new Matrix(16, 1);
+        getMatrixF(func, bikubik);
+
+        Matrix X = new Matrix(16, 16);
+        getMatrixX(X);
+
+        Matrix A = new Matrix(16, 1);
+        getMatrixA(func, X, A);
+
+        double hasil = getValue(A, x, y);
+        System.out.println("Hasil : " + hasil);
     }
 
     public static void getMatrixX(Matrix XVar) {
@@ -35,7 +60,7 @@ public class InterpolasiBikubik {
     }
 
     public static void getMatrixA(Matrix Fungsi, Matrix XVar, Matrix AVar) {
-        AVar = Matrix.Multiply(Matrix.inverseSPL(XVar), Fungsi);
+        AVar = Matrix.Multiply(Matrix.InverseDgnGauss(XVar), Fungsi);
     }
 
     public static void getMatrixF(Matrix Fungsi, Matrix M) {
@@ -51,10 +76,11 @@ public class InterpolasiBikubik {
     }
 
     public static double getValue(Matrix AVar, double x, double y) {
-        Matrix XRow = new Matrix(1, AVar.getCol());
+        Matrix XRow = new Matrix(1, AVar.getRow());
         XRow.M[0] = getRowX(x, y);
-        Matrix F = Matrix.Multiply(XRow, AVar);
+        Matrix hasil = new Matrix(1, 1);
+        hasil = Matrix.Multiply(XRow, AVar);
 
-        return F.M[0][0];
+        return hasil.M[0][0];
     }
 }
