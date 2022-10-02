@@ -1,258 +1,21 @@
 package src;
 
-import java.io.File;
 import java.util.*;
-import java.lang.Math;
-/*import java.io.*; */
 
 public class Matrix {
-
-    /*deklarasi row col*/
+    /* -- ATRIBUT -- */
     static Scanner input = new Scanner(System.in);
-    static double[][] M;
+    double[][] M;
     int row;
     int col;
 
-    /* Konstruktor */
+    /* -- KONSTRUKTOR -- */
     public Matrix(int r, int c) {
         this.row = r;
         this.col = c;
         this.M = new double[r][c];
-    }
-
-    public static void main(String[] args) {
-        Matrix m = inputMatrixFromKeyboard();
-        Matrix i = Multiply(m, m);
-
-        printMatrix(m);
-        printMatrix(i);
-    }
-    public static Matrix inputMatrix() {
-
-        Scanner myObj = new Scanner(System.in);
-        int choice;
-        System.out.println("Masukkan jumlah baris matriks: ");
-        String mInt = myObj.nextLine();
-        System.out.println("Masukkan jumlah kolom matriks: ");
-        String nInt = myObj.nextLine();
-
-        int m = Integer.parseInt(mInt);
-        int n = Integer.parseInt(nInt);
-
-        Matrix matrix = new Matrix(m, n);
-
-        System.out.println("Select matrix input");
-        System.out.print("""
-		        1. Keyboard
-		        2. File
-		        """);
-        System.out.println("Masukan pilihan: ");
-        String strchoice = myObj.nextLine();
-        choice = Integer.parseInt(strchoice);
-
-        switch (choice) {
-            case 1 :
-                matrix = inputMatrixFromKeyboard();
-                break;
-            case 2 :
-                System.out.println("input file name: ");
-                File file = new File(myObj.nextLine());
-                matrix = InputOutput.fileToMatrix(file);
-                break;
-        }
-        return matrix;
-    }
-
-    public static Matrix inputMatrixSPLFromKeyboard() {
-
-        Scanner myObj = new Scanner(System.in);
-        int choice;
-        System.out.println("Masukkan jumlah baris matriks: ");
-        String mInt = myObj.nextLine();
-        System.out.println("Masukkan jumlah kolom matriks: ");
-        String nInt = myObj.nextLine();
-
-        int m = Integer.parseInt(mInt);
-        int n = Integer.parseInt(nInt);
-
-        Matrix matrix = new Matrix(m, n);
-
-        matrix = inputMatrixFromKeyboard();
-
-        return matrix;
-    }
-
-    public static Matrix inputSquareMatrix() {
-
-        Scanner myObj = new Scanner(System.in);
-        int choice;
-        System.out.println("Masukkan n: ");
-        String nInt = myObj.nextLine();
-
-        int n = Integer.parseInt(nInt);
-
-        Matrix matrix = new Matrix(n, n);
-
-        System.out.println("Select matrix input");
-        System.out.print("""
-		        1. Keyboard
-		        2. File
-		        """);
-        System.out.println("Masukan pilihan: ");
-        String strchoice = myObj.nextLine();
-        choice = Integer.parseInt(strchoice);
-
-        switch (choice) {
-            case 1 :
-                matrix = inputMatrixFromKeyboard();
-                boolean check = (matrix.getRow() == n) && (matrix.getCol() == n);
-                while (!check) {
-                    System.out.println("Masukan tidak valid");
-                    matrix = inputMatrixFromKeyboard();
-                    check = (matrix.getRow() == n) && (matrix.getCol() == n);
-                }
-                break;
-            case 2 :
-                System.out.println("input file name: ");
-                File file = new File(myObj.nextLine());
-                matrix = InputOutput.fileToMatrix(file);
-                break;
-        }
-        return matrix;
-    }
-    public static Matrix inputMatrixFromKeyboard() {
-        boolean loop = true;
-        Scanner in = new Scanner(System.in);
-        String data;
-        String out = "";
-
-        System.out.println("Masukan matriks dipisahkan oleh spasi, diakhiri double enter");
-        while (loop) {
-            data = in.nextLine();
-            if (data.isEmpty()) {
-                loop = false;
-            } else {
-                out += data + "\n";
-            }
-        }
-        return InputOutput.stringToMatrix(out);
-    }
-
-
-    public final void inputDataFromDouble(double[][] data) {
-        // Function to set the data of a matrix
-        this.row = data.length;
-        this.col = data.length > 0 ? data[0].length : 0;
-        this.M = data;
-    }
-    public void readMatrix() {
-        /* KAMUS LOKAL */
-        int i, j;
-        /* ALGORITMA */
-        for (i = 0; i < this.row; i++) {
-          for (j = 0; j < this.col; j++) {
-            this.M[i][j] = input.nextDouble();
-          }
-        }
-      }
-    public static void readMatrixPerLine(Matrix mat, int m, int n) {
-        // Procedure to read matrix from user input
-        // I.S. mat is defined
-        // F.S. mat is filled with values of m x n
-        // LOCAL DICTIONARY
-        Matrix temp;
-        Scanner myObj = new Scanner(System.in);
-        int i, j;
-
-        // ALGORITHM
-
-        temp = new Matrix(m, n);
-
-        System.out.println("Enter matrix: ");
-        for (i = 0; i < m; i++) {
-            for (j = 0; j < n; j++) {
-                String element = myObj.nextLine();
-                temp.M[i][j] = Double.parseDouble(element);
-            }
-        }
-
-        copyMatrix(temp, mat);
-    }
-
-    public static Matrix readMatrixPerRow() {
-        int n = 0;
-        int m = 0;
-        double[][] newmat = new double[n][n];
-        Scanner in = new Scanner(System.in);
-        boolean loop = true;
-        while (loop) {
-            n++;
-            String[] data = in.nextLine().split(" ");
-            double[] numbers = new double[data.length];
-            m = data.length;
-            System.out.println(m);
-            if (m == 1) {
-                System.out.println("Kosong");
-                loop = false;
-                n--;
-                break;
-            }
-            for (int i = 0; i < data.length; i++) {
-                    numbers[i] = Double.parseDouble(data[i]);
-            }
-            newmat = new double[n][data.length];
-            newmat[n-1] = numbers;
-            System.out.println(Arrays.toString(numbers));
-        }
-        Matrix hasil = new Matrix(n, m);
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                hasil.M[i][j] = newmat[i][j];
-            }
-        }
-        return hasil;
-    }
-
-    public static void printMatrix(Matrix mat){
-        // Procedure to print matrix
-        // I.S. mat is defined
-        // F.S. mat is printed to the screen
-        // LOCAL DICTIONARY
-        int i, j;
-
-        // ALGORITHM
-        for (i = 0; i < mat.getRow(); i++) {
-            for (j = 0; j < mat.getCol(); j++) {
-                System.out.print(mat.M[i][j] + " ");
-            }
-            System.out.println();
-        }
-    }
-
-    public static boolean isSquare(Matrix mat) {
-        // Function to determine whether a matrix is a square matrix or not
-        // Square matrix : m x n where m = n
-
-        return mat.getRow() == mat.getCol();
-    }
-
-    public static void copyMatrix(Matrix mat1, Matrix mat2) {
-        // M2 merupakan hasil copy matrix M1
-
-        int rowEff = mat1.getRow();
-        int colEff = mat1.getCol();
-        int i, j;
-
-        for (i = 0; i < rowEff; i++) {
-            for (j = 0; j < colEff; j++) {
-                mat2.M[i][j] = mat1.M[i][j];
-            }
-        }
-
-    }
-    
-    /* GETTER */
+    }        
+    /* ======== GETTER ======== */
     public int getRow() {
         return this.row;
     }
@@ -265,30 +28,50 @@ public class Matrix {
         return (this.M[i][j]);
     }
 
-    public double[] getRow(int row) {
-        return this.M[row];
+    /* ======== SETTER ======== */
+    public void setELMT(int i, int j, double value) {
+        this.M[i][j] = value;
     }
 
-    public void setRow(int row, double[] data) {
-        this.M[row] = data;
+    public void setIdentitas() {
+        // Mengubah matriks menjadi matriks identitas
+        for (int i = 0; i < row; i++) {
+          for (int j = 0; j < col; j++) {
+            if (i == j) {
+              this.M[i][j] = 1.0f;
+            } 
+            else {
+              this.M[i][j] = 0.0f;
+            }
+          }
+        }
     }
-    /* OPERANDS */
-    public void switchRow(int i1, int i2) {
+
+    /* -- IO -- */
+    public void readMatrix() {
         /* KAMUS LOKAL */
-        int j;
-        double temp;
+        int i, j;
         /* ALGORITMA */
-        for (j = 0; j < col; j++) {
-          temp = this.M[i1][j];
-          this.M[i1][j] = this.M[i2][j];
-          this.M[i2][j] = temp;
+        for (i = 0; i < this.row; i++) {
+          for (j = 0; j < this.col; j++) {
+           this.M[i][j] = input.nextDouble();
+          }
+        }
+    }
+
+    public void readMatrixRegresi(int N) {
+        /* KAMUS LOKAL */
+        int i;
+        /* ALGORITMA */
+        for (i = 0; i < N; i++) {
+          System.out.print(">X" + (i + 1) + ": ");
+          this.M[0][i] = input.nextDouble();
         }
     }
 
     public void displayMatrix() {
-        /* KAMUS LOKAL */
         int i, j;
-        /* ALGORITMA */
+
         for (i = 0; i < this.row; i++) {
           for (j = 0; j < this.col; j++) {
             System.out.print(M[i][j]);
@@ -299,18 +82,129 @@ public class Matrix {
           System.out.println();
         }
         System.out.println();
-      }
+    }
 
-    public void readMatrixRegresi(int N) {
-        /* KAMUS LOKAL */
-        int i;
-        /* ALGORITMA */
-        for (i = 0; i < N; i++) {
-          System.out.print(">X" + (i + 1) + ": ");
-          this.M[0][i] = input.nextDouble();
+    public final void inputDataFromDouble(double[][] data) {
+        // Function to set the data of a matrix
+        this.row = data.length;
+        this.col = data.length > 0 ? data[0].length : 0;
+        this.M = data;
+    }
+
+    /* -- OPERATIONS -- */
+    public int Size() {
+        return (this.row * this.col);
+    }
+
+    public void operationRow(int i1, int i2, double k) {
+        int j;
+        for (j = 0; j < col; j++) {
+          this.M[i1][j] -= k * this.M[i2][j];
+        }
+    }
+
+    public void divRow(int i, double k) 
+    // membagi elemen pada row dgn konstanta k
+    {
+        int j;
+        for (j = 0; j < col; j++) {
+          this.M[i][j] /= k;
+        }
+    }
+
+    public void switchRow(int i1, int i2) {
+        int j;
+        double temp;
+
+        for (j = 0; j < col; j++) {
+          temp = this.M[i1][j];
+          this.M[i1][j] = this.M[i2][j];
+          this.M[i2][j] = temp;
+        }
+    }
+
+    public void copyMatrix_altern(Matrix outM) {
+
+        int i, j;
+
+        for (i = 0; i < outM.getRow(); i++) {
+          for (j = 0; j < outM.getCol(); j++) {
+            outM.setELMT(i, j, this.getELMT(i, j));
+          }
         }
       }
 
+    public static void switchRowEmpty(Matrix m) {
+        for (int i = 0; i < m.getRow(); i++) {
+          if (isRowEmpty(m, i)) {
+            for (int j = i + 1; j < m.getRow(); j++) {
+              if (!isRowEmpty(m, j)) {
+                m.switchRow(i, j);
+              }
+            }
+          }
+        }
+    }
+
+    public static void changeZeroval(Matrix m) {
+        for (int i = 0; i < m.row; i++) {
+            for (int j = 0; j < m.col; j++) {
+                if (m.M[i][j] == -0.0) {
+                m.M[i][j] = Math.abs(m.M[i][j]);
+                }
+            }
+        }
+    }
+
+    public static Matrix transpose(Matrix M) {
+        /* KAMUS LOKAL */
+        int i, j;
+        Matrix Mout = new Matrix(M.getRow(), M.getCol());
+        /* ALGORITMA */
+        for (i = 0; i < M.getRow(); i++) {
+          for (j = 0; j < M.getCol(); j++) {
+            Mout.setELMT(j, i, M.getELMT(i, j));
+          }
+        }
+        return Mout;
+    }
+
+    public static Matrix getMKoef(Matrix m) {
+        Matrix mKoef = new Matrix(m.row, m.col - 1);
+        int i, j;
+
+        for (i = 0; i < mKoef.row; i++) {
+            for (j = 0; j < mKoef.col; j++) {
+                mKoef.M[i][j] = m.M[i][j];
+            }
+        }
+        return mKoef;
+    }
+
+    public static Matrix createMAug(Matrix koef, Matrix cons) {
+
+        Matrix mAug = new Matrix(koef.getRow(), koef.getCol() + 1);
+    
+        for (int i = 0; i < koef.getRow(); i++) {
+          for (int j = 0; j < mAug.getCol() - 1; j++) {
+            mAug.M[i][j] = mAug.M[i][j];
+          }
+        }
+        for (int k = 0; k < mAug.getRow(); k++) {
+            mAug.M[k][mAug.getCol() - 1] = mAug.M[k][0];
+        }
+        return mAug;
+    }
+    public static Matrix getMConst(Matrix m) {
+
+        Matrix mConst = new Matrix(m.row, 1);
+        int i;
+
+        for (i = 0; i < mConst.row; i++) {
+            mConst.M[i][0] = m.M[i][m.col - 1];
+        }
+        return mConst;
+    }
     public static Matrix Multiply(Matrix A, Matrix B) {
         /*LOCAL DICTIONARY*/
         Matrix C;
@@ -318,85 +212,33 @@ public class Matrix {
         /*ALGORITHM*/
         C = new Matrix(A.getRow(), B.getCol());
 
-        for (i = 0; i < C.getRow(); i++)
-        {
-            for (j = 0; j < C.getCol(); j++)
-            {
+        for (i = 0; i < C.getRow(); i++){
+            for (j = 0; j < C.getCol(); j++){
                 C.M[i][j] = 0;
-                for (k = 0; k < A.getCol(); k++)
-                {
-                    C.M[i][j] += A.M[i][k] * B.M[k][j];
+                for (k = 0; k < A.getCol(); k++){
+                    C.M[i][j] += C.M[i][k] * C.M[k][j];
                 }
             }
         }
         return C;
     }
 
-    /* SETTER */
-    public void setELMT(int i, int j, double value) {
-        this.M[i][j] = value;
-    }
-
-    public void rowOperations(int i1, int i2, double k) {
-        int j;
-
-        for (j = 0; j < col; j++) {
-            this.M[i1][j] -= k * this.M[i2][j];
-        }
-    }
-
-    public static void changeZeroval(Matrix m) {
-        for (int i = 0; i < m.row; i++) {
-        for (int j = 0; j < m.col; j++) {
-            if (m.M[i][j] == -0.0) {
-            m.M[i][j] = Math.abs(m.M[i][j]);
+    public Matrix multiply_altern(Matrix m1, Matrix m2) {
+        /* KAMUS LOKAL */
+        int i, j, k = 0;
+        Matrix mHasil = new Matrix(m1.getRow(), m2.getCol());
+        double temp = 0;
+        /* ALGORITMA */
+        for (i = 0; i < m1.getRow(); i++) {
+          for (j = 0; j < m2.getCol(); j++) {
+            temp = 0;
+            for (k = 0; k < m1.getCol(); k++) {
+              temp += m1.getELMT(i, k) * m2.getELMT(k, j);
             }
-        }
-        }
-    }
-    
-    /* Mengecek apakah elemen pada diagonal M bernilai 1 */
-    public static boolean isDiagonalSatu(Matrix M) {
-
-        int i;
-        boolean check = true;
-
-        i = 0;
-        while (i < M.getRow() && check) {
-            if (M.getELMT(i, i) != 1) {
-                check = false;
-            }
-            i++;
-        }
-        return check;
-    }
-
-    /* Mengecek apakah semua elemen pada suatu baris bernilai 0 */
-    public static boolean isRowZero(Matrix M, int row) {
-        int j = 0;
-        boolean check = true;
-
-        while (j < M.getCol() - 1 && check) {
-          if (M.getELMT(row, j) != 0) {
-            check = false;
+            mHasil.setELMT(i, j, temp);
           }
-          j++;
         }
-        return check;
-    }
-
-    /* Mengecek apakah suatu baris kosong */
-    public static boolean isRowEmpty(Matrix m, int i) {
-        int count = 0;
-        int idx = 0;
-
-        while (count == 0 && idx < m.col) {
-        if (m.M[i][idx] != 0) {
-            count++;
-        }
-        idx++;
-        }
-        return (count == 0);
+        return mHasil;
     }
 
     /* Mendapatkan pivot Matrix yang bernilai 1 */
@@ -415,7 +257,7 @@ public class Matrix {
         j++;
         }
         return idxLead;
-    }
+    }    
 
     // Fungsi untuk menghasilkan array pecahan sebuah parametrik, contoh 1.00t
     // dipecah menjadi [1.00, t]
@@ -440,67 +282,41 @@ public class Matrix {
         return (out);
     }
 
-    /* Membentuk Matrix Koefisien */
-    public static Matrix getMKoef(Matrix m) {
+    public void rowOperations(int i1, int i2, double k) {
+        int j;
 
-        Matrix mKoef = new Matrix(m.row, m.col - 1);
-        int i, j;
-
-        for (i = 0; i < mKoef.row; i++) {
-            for (j = 0; j < mKoef.col; j++) {
-                mKoef.M[i][j] = m.M[i][j];
+        for (j = 0; j < col; j++) {
+            this.M[i1][j] -= k * this.M[i2][j];
         }
     }
-    return mKoef;
-  }
 
-    /* Membentuk Matrix Konstanta */
-    public static Matrix getMConst(Matrix m) {
+    /* -- BOOL FUNCTION CHECKING -- */
+    public static boolean isRowEmpty(Matrix m, int i) {
+        int count = 0;
+        int idx = 0;
 
-        Matrix mConst = new Matrix(m.row, 1);
-        int i;
-
-        for (i = 0; i < mConst.row; i++) {
-          mConst.M[i][0] = m.M[i][m.col - 1];
+        while (count == 0 && idx < m.col) {
+        if (m.M[i][idx] != 0) {
+            count++;
         }
-        return mConst;
+        idx++;
+        }
+        return (count == 0);
     }
 
-    /* Membentuk Matrix Augmented */
-    public static Matrix createMAug(Matrix koef, Matrix cons) {
+    public static boolean isRowZero(Matrix M, int row) {
+        int j = 0;
+        boolean check = true;
 
-    Matrix mAug = new Matrix(koef.getRow(), koef.getCol() + 1);
-
-    for (int i = 0; i < koef.getRow(); i++) {
-      for (int j = 0; j < mAug.getCol() - 1; j++) {
-        mAug.M[i][j] = koef.M[i][j];
-      }
-    }
-    for (int k = 0; k < mAug.getRow(); k++) {
-        mAug.M[k][mAug.getCol() - 1] = cons.M[k][0];
-    }
-    return mAug;
-  }
-
-    /* Memindahkan baris kosong ke bawah*/
-    public static void switchRowEmpty(Matrix m) {
-        for (int i = 0; i < m.getRow(); i++) {
-          if (isRowEmpty(m, i)) {
-            for (int j = i + 1; j < m.getRow(); j++) {
-              if (!isRowEmpty(m, j)) {
-                m.switchRow(i, j);
-              }
-            }
+        while (j < M.getCol() - 1 && check) {
+          if (M.getELMT(row, j) != 0) {
+            check = false;
           }
+          j++;
         }
+        return check;
     }
 
-    public int Size() {
-        /* ALGORITMA */
-        return (this.row * this.col);
-    }
-
-    /* Mengecheck apakah elemen dibawah elemen (i, j) kosong */
     public static boolean isUnderEmpty(Matrix m, int i, int j) {
         int count, iRow;
         count = 0;
@@ -514,143 +330,136 @@ public class Matrix {
         return (count == 0);
     }
 
-    /* Creates identity matrix based on the order of matrix parameter (orderOfMatrix)*/
-    public static Matrix createIdentityMatrix(int orderOfMatrix) {
-        int i, j;
-        Matrix identityMatrix;
+    public static boolean isDiagonalSatu(Matrix M) {
 
-        identityMatrix = new Matrix(orderOfMatrix, orderOfMatrix);
+        int i;
+        boolean check = true;
 
-        for (i = 0; i < orderOfMatrix; i++) {
-            for (j = 0; j < orderOfMatrix; j++) {
-                if (i == j) {
-                    identityMatrix.setELMT(i, j, 1);
-                }
-                else {
-                    identityMatrix.setELMT(i, j, 0);
-                }
+        i = 0;
+        while (i < M.getRow() && check) {
+            if (M.getELMT(i, i) != 1) {
+                check = false;
             }
+            i++;
         }
-
-        return identityMatrix;
+        return check;
     }
 
-    public static Matrix transpose(Matrix M) {
-        /* KAMUS LOKAL */
-        int i, j;
-        Matrix Mout = new Matrix(M.getRow(), M.getCol());
-        /* ALGORITMA */
-        for (i = 0; i < M.getRow(); i++) {
-          for (j = 0; j < M.getCol(); j++) {
-            Mout.setELMT(j, i, M.getELMT(i, j));
-          }
-        }
-        return Mout;
-    }
-
+    /* DETERMINAN */
     public static double determinanReduksiBaris(Matrix mat) {
-        // Precondition: isSquare(mat) == true
-        // Finding determinant with Row Reduction (Upper Triangle Matrix)
-        // LOCAL DICTIONARY
         int rowEff = mat.getRow();
         int colEff = mat.getCol();
         int row = rowEff - 1;
         int col = colEff - 1;
-        // temp is a temporary matrix to ignore the already zero-ed column
+
         Matrix temp = new Matrix(row, col);
         int i, j;
         double konst;
 
-        // ALGORITHM
         // Base
-        // Return the determinant of a 2x2 matrix
+        // Matrix 2x2
         if (rowEff == 2) {
             return (mat.M[0][0] * mat.M[1][1]) - (mat.M[0][1] * mat.M[1][0]);
         }
-        // Recurrent
         else {
-            // Multiplying the lower row from with a factor konst
-            // (first element of the n row / first element of the first row) of the top row
             for (i = 1; i < rowEff; i++) {
                 konst = mat.M[i][0] / mat.M[0][0];
                 for (j = 1; j < colEff; j++) {
-                    // Multiplying and saving the element
-                    temp.M[i - 1][j - 1] = mat.M[i][j] - konst * mat.M[0][j];
+                    mat.M[i - 1][j - 1] = mat.M[i][j] - konst * mat.M[0][j];
                 }
             }
             return mat.M[0][0] * determinanReduksiBaris(temp);
         }
     }
 
-    /* Returns the determinant of parameter Matrix M using confactor expansion method */
-    public static double findDeterminantUsingCofactorExpansion(Matrix M) {
-        // Precondition: isSquare(M) == true
-        // Finding determinant with cofactor expansion method
-        // DICTIONARY
-        double determinant;
-        Matrix submatrix;
-        int i, j, k, sub_row, sub_col;
+    public static double detKofaktor(Matrix M) {
+        int i, j, k;
+        int iCol, iRow;
+        double hasil;
+        Matrix mKof = new Matrix(M.getRow() - 1, M.getCol() - 1);
 
-        // ALGORITHM
-        if (M.getRow() == 1) {
-            return M.getELMT(0, 0);
-        }
-        else {
-            determinant = 0;
+        hasil = 0;
 
-            for (i = 0; i < M.getRow(); i++) {
-                submatrix = new Matrix(M.getRow() - 1, M.getCol() - 1);
-
-                sub_row = 0;
-                for (j = 0; j < M.getRow(); j++) {
-
-                    sub_col = 0;
-                    for (k = 1; k < M.getCol(); k++) {
-                        if (j < i) {
-                            submatrix.setELMT(sub_row, sub_col, M.getELMT(j, k));
-                            sub_col += 1;
-                        }
-                        else if (j > i) {
-                            submatrix.setELMT(sub_row - 1, sub_col, M.getELMT(j, k));
-                            sub_col += 1;
-                        }
-                    }
-                    sub_row += 1;
+        if (M.Size() == 1) {
+          // Basis untuk matrix 1x1
+          hasil = M.getELMT(0, 0);
+        } else if (M.Size() == 4) {
+          // Basis untuk matrix 2x2;
+          hasil = (M.getELMT(0, 0) * M.getELMT(1, 1)) - (M.getELMT(0, 1) * M.getELMT(1, 0));
+        } else {
+          // submatrix kofaktor
+          for (k = 0; k < M.getCol(); k++) {
+            iRow = 0;
+            for (i = 1; i < M.getRow(); i++) {
+              iCol = 0;
+              for (j = 0; j < M.getCol(); j++) {
+                if (j != k) {
+                  mKof.setELMT(iRow, iCol, M.getELMT(i, j));
+                  iCol++;
                 }
-                determinant += Math.pow(-1, i) * M.getELMT(i, 0) * findDeterminantUsingCofactorExpansion(submatrix);
+              }
+              iRow++;
             }
-            return determinant;
+            // urutan + - kofaktor
+            if (k % 2 == 0) {
+              hasil += M.getELMT(0, k) * detKofaktor(mKof);
+            } else {
+              hasil += -1 * M.getELMT(0, k) * detKofaktor(mKof);
+            }
+          }
         }
+        return hasil;
     }
 
-    /* Returns the inverse matrix of parameter Matrix M with the formula (1/det(M)) * Adjugate(M) */
-    public static Matrix findInverseUsingAdjugate(Matrix M) {
-        // DICTIONARY
-        Matrix adjugate, inverse;
-        double determinant;
-        int i, j;
+    /* INVERS */
+    public static Matrix InverseDgnGauss(Matrix M) {
+        int i, j, k;
+        Matrix Mkiri = new Matrix(M.getRow(), M.getCol());
+        Matrix Mkanan = new Matrix(M.getRow(), M.getCol());
+    
+        M.copyMatrix_altern(Mkiri);
+        M.copyMatrix_altern(Mkanan);
 
-        // ALGORITHM
-        determinant = findDeterminantUsingCofactorExpansion(M);
-        adjugate = transpose(findCofactorMatrix(M));
-        inverse = new Matrix(M.getRow(), M.getCol());
-
-        for (i = 0; i < M.getRow(); i++) {
-            for (j = 0; j < M.getCol(); j++) {
-                inverse.setELMT(i, j, (1 / determinant) * adjugate.getELMT(i, j));
+        // Matrix kanan matrix identitas
+        Mkanan.setIdentitas();
+        for (i = 0; i < Mkiri.getRow(); i++) {
+          // pertukaran jika elemen diagonal ada yang 0
+          if (Mkiri.getELMT(i, i) == 0) {
+            boolean check = true;
+            k = i + 1;
+            while (k < Mkiri.getRow() && check) {
+              if (Mkiri.getELMT(k, i) != 0) {
+                Mkanan.switchRow(i, k);
+                Mkiri.switchRow(i, k);
+                check = false;
+              }
             }
+          }
+    
+          if (Mkiri.getELMT(i, i) != 1) {
+            Mkanan.divRow(i, Mkiri.getELMT(i, i));
+            Mkiri.divRow(i, Mkiri.getELMT(i, i));
+          }
+
+          // OBE pada pivot
+          for (j = 0; j < Mkiri.getRow(); j++) {
+            if (Mkiri.getELMT(j, i) != 0 && i != j) {
+              Mkanan.operationRow(j, i, Mkiri.getELMT(j, i));
+              Mkiri.operationRow(j, i, Mkiri.getELMT(j, i));
+            }
+          }
         }
 
-        return inverse;
+        Matrix.changeZeroval(Mkanan);
+        return Mkanan;
     }
 
-    /* Returns the cofactor matrix of the parameter Matrix M */
+    /* KOFAKTOR */
     public static Matrix findCofactorMatrix(Matrix M) {
-        // DICTIONARY
+
         Matrix submatrix, cofactorMatrix;
         int i, j, k, l;
 
-        // ALGORITHM
         cofactorMatrix = new Matrix(M.getRow(), M.getCol());
 
         for (i = 0; i < M.getRow(); i++) {
@@ -658,7 +467,6 @@ public class Matrix {
 
                 submatrix = new Matrix(M.getRow() - 1, M.getCol() - 1);
                 for (k = 0; k < M.getRow(); k++) {
-
                     for (l = 0; l < M.getCol(); l++) {
                         if (k < i && l < j) {
                             submatrix.setELMT(k, l, M.getELMT(k, l));
@@ -674,97 +482,26 @@ public class Matrix {
                         }
                     }
                 }
-
-                cofactorMatrix.setELMT(i, j, Math.pow(-1, (i + j)) * findDeterminantUsingCofactorExpansion(submatrix));
+                cofactorMatrix.setELMT(i, j, Math.pow(-1, (i + j)) * detKofaktor(submatrix));
             }
         }
-
         return cofactorMatrix;
     }
 
-    public void setIdentitas() {
-        // Mengubah matriks menjadi matriks identitas
-        for (int i = 0; i < row; i++) {
-          for (int j = 0; j < col; j++) {
-            if (i == j) {
-              this.M[i][j] = 1.0f;
-            } else {
-              this.M[i][j] = 0.0f;
+    public static Matrix findInverseUsingAdjugate(Matrix M) {
+        Matrix adjugate, inverse;
+        double determinant;
+        int i, j;
+
+        determinant = detKofaktor(M);
+        adjugate = transpose(findCofactorMatrix(M));
+        inverse = new Matrix(M.getRow(), M.getCol());
+
+        for (i = 0; i < M.getRow(); i++) {
+            for (j = 0; j < M.getCol(); j++) {
+                inverse.setELMT(i, j, (1 / determinant) * adjugate.getELMT(i, j));
             }
-          }
         }
+        return inverse;
     }
-
-    public void divRow(int i, double k) 
-    // membagi elemen pada row dgn konstanta k
-    {
-        /* KAMUS LOKAL */
-        int j;
-        /* ALGORITMA */
-        for (j = 0; j < col; j++) {
-          this.M[i][j] /= k;
-        }
-    }
-
-    public void operationRow(int i1, int i2, double k) {
-        /* KAMUS LOKAL */
-        int j;
-        /* ALGORITMA */
-        for (j = 0; j < col; j++) {
-          this.M[i1][j] -= k * this.M[i2][j];
-        }
-      }
-
-  public static Matrix InverseDgnGauss(Matrix M) {
-    /* KAMUS LOKAL */
-    int i, j, k;
-    Matrix Mkiri = new Matrix(M.getRow(), M.getCol());
-    Matrix Mkanan = new Matrix(M.getRow(), M.getCol());
-
-    /* ALGORITMA */
-    copyMatrix(M, Mkiri);
-    copyMatrix(M, Mkanan);
-    // Matrix kanan dijadikan matrix identitas
-    Mkanan.setIdentitas();
-    for (i = 0; i < Mkiri.getRow(); i++) {
-      // Melakukan pertukaran jika elemen diagonal ada yang 0
-      if (Mkiri.getELMT(i, i) == 0) {
-        boolean check = true;
-        k = i + 1;
-        while (k < Mkiri.getRow() && check) {
-          if (Mkiri.getELMT(k, i) != 0) {
-            Mkanan.switchRow(i, k);
-            Mkiri.switchRow(i, k);
-            check = false;
-          }
-        }
-      }
-
-      // Melakukan pembagian koefisien jika pivot != 1
-      if (Mkiri.getELMT(i, i) != 1) {
-        Mkanan.divRow(i, Mkiri.getELMT(i, i));
-        Mkiri.divRow(i, Mkiri.getELMT(i, i));
-      }
-      // Melakukan OBE pada pivot
-      for (j = 0; j < Mkiri.getRow(); j++) {
-        if (Mkiri.getELMT(j, i) != 0 && i != j) {
-          Mkanan.operationRow(j, i, Mkiri.getELMT(j, i));
-          Mkiri.operationRow(j, i, Mkiri.getELMT(j, i));
-        }
-      }
-    }
-    // Menghilangkan -0.0
-    Matrix.changeZeroval(Mkanan);
-    return Mkanan;
-  }
-
-  public static Matrix findInverse(Matrix M) {
-
-    return M;
-}
-
-public static Matrix inverseSPL(Matrix xVar) {
-    return null;
-}
-      
 }

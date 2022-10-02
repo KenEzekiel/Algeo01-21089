@@ -42,7 +42,7 @@ public class PolynomialInterpolation {
                 System.out.println("Input salah.");
             }
         }
-
+        choiceScanner.close();
         pointsMatrix = new Matrix(1, 1);
 
         switch (choice) {
@@ -69,6 +69,7 @@ public class PolynomialInterpolation {
                 xScanner.next();
             }
         }
+        xScanner.close();
 
         estimation = interpolate(solutionMatrix, x);
 
@@ -85,77 +86,80 @@ public class PolynomialInterpolation {
 
     /* Function to read n from keyboard input and returns it as an integer */
     public  static int readN() {
-        // DICTIONARY
-        Scanner nScanner = new Scanner(System.in);
-        int n;
+        try (// DICTIONARY
+        Scanner nScanner = new Scanner(System.in)) {
+            int n;
 
-        // ALGORITHM
-        while (true) {
-            System.out.println("Masukkan nilai n:");
-            try {
-                n = nScanner.nextInt();
-                break;
+            // ALGORITHM
+            while (true) {
+                System.out.println("Masukkan nilai n:");
+                try {
+                    n = nScanner.nextInt();
+                    break;
+                }
+                catch (InputMismatchException e) {
+                    System.out.println("Input salah.");
+                    nScanner.next();
+                }
             }
-            catch (InputMismatchException e) {
-                System.out.println("Input salah.");
-                nScanner.next();
-            }
+
+            return n;
         }
-
-        return n;
     }
 
     /* Function to read file name from keyboard and returns it as a string */
     public static String readFileName() {
-        // DICTIONARY
-        Scanner fileNameScanner = new Scanner(System.in);
-        String fileName;
+        try (// DICTIONARY
+        Scanner fileNameScanner = new Scanner(System.in)) {
+            String fileName;
 
-        // ALGORITHM
-        while (true) {
-            System.out.println("Masukkan nama file (dengan relative path yang sesuai dari path eksekusi program). Contoh: \"test/points.txt\":");
-            try {
-                fileName = fileNameScanner.nextLine();
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("Input salah.");
-                fileNameScanner.next();
+            // ALGORITHM
+            while (true) {
+                System.out.println("Masukkan nama file (dengan relative path yang sesuai dari path eksekusi program). Contoh: \"test/points.txt\":");
+                try {
+                    fileName = fileNameScanner.nextLine();
+                    break;
+                } catch (InputMismatchException e) {
+                    System.out.println("Input salah.");
+                    fileNameScanner.next();
+                }
             }
-        }
 
-        return fileName;
+            return fileName;
+        }
     }
 
     /* Function to read points (x0, y0), (x1, y1), ..., (xn, yn)
     from keyboard input and returns a matrix containing them */
     public static Matrix readPointsFromKeyboard() {
-        // DICTIONARY
-        Scanner pointScanner = new Scanner(System.in);
-        Matrix M;
-        int n, i;
-        double pointElement;
+        try (// DICTIONARY
+        Scanner pointScanner = new Scanner(System.in)) {
+            Matrix M;
+            int n, i;
+            double pointElement;
 
-        // ALGORITHM
-        n = PolynomialInterpolation.readN();
-        M = new Matrix(n + 1, 2);
+            // ALGORITHM
+            n = PolynomialInterpolation.readN();
+            M = new Matrix(n + 1, 2);
 
-        i = 0;
-        while (i <= n) {
-            System.out.printf("Masukkan titik (x%d, y%d) dengan absis dan ordinat terpisah spasi:\n", i, i);
-            try {
-                pointElement = pointScanner.nextDouble();
-                M.setELMT(i, 0, pointElement);
-                pointElement = pointScanner.nextDouble();
-                M.setELMT(i, 1, pointElement);
-                i++;
+            i = 0;
+            while (i <= n) {
+                System.out.printf("Masukkan titik (x%d, y%d) dengan absis dan ordinat terpisah spasi:\n", i, i);
+                try {
+                    pointElement = pointScanner.nextDouble();
+                    M.setELMT(i, 0, pointElement);
+                    pointElement = pointScanner.nextDouble();
+                    M.setELMT(i, 1, pointElement);
+                    i++;
+                }
+                catch (InputMismatchException e) {
+                    System.out.println("Input salah.");
+                    pointScanner.next();
+                }
             }
-            catch (InputMismatchException e) {
-                System.out.println("Input salah.");
-                pointScanner.next();
-            }
+
+            return M;
         }
-
-        return M;
     }
 
     /* Function to read points (x0, y0), (x1, y1), ..., (xn, yn)
