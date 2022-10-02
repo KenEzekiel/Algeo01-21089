@@ -10,6 +10,8 @@ import java.util.logging.Logger;
 public class InputOutput {
     private Scanner file;
     private String fileName;
+    static Scanner in = new Scanner(System.in); // Input String
+    static Scanner sc = new Scanner(System.in); // Input integer/double
 
     public InputOutput(String path) {
     }
@@ -122,5 +124,177 @@ public class InputOutput {
         }
         closeFile();
         return M;
+    }
+    
+  // ---- SAVE ----
+
+  // UI Save
+  public static void displaySave() {
+    System.out.println();
+    System.out.println("Apakah anda ingin melakukan save pada hasil ?");
+    System.out.println("1. Ya");
+    System.out.println("2. Tidak");
+  }
+
+  /* Menuliskan Matrix ke dalam file */
+  public static void writeMatrix(Matrix M, String file) {
+    int i, j;
+    try {
+      PrintWriter out = new PrintWriter(file);
+      for (i = 0; i < M.row; i++) {
+        for (j = 0; j < M.col; j++) {
+          out.print(M.getELMT(i, j));
+          if (j != M.col - 1) {
+            out.print(" ");
+          }
+        }
+        out.println();
       }
+      out.close();
+    } catch (Exception e) {
+      System.out.println("writeMatrix error");
+    }
+  }
+
+  /* Melakukan save File untuk metode Inverse */
+  public static void saveFileInverse(Matrix hasil) {
+    /* KAMUS LOKAL */
+    int choice;
+    String nama;
+    PrintWriter out;
+    /* ALGORITMA */
+    try {
+      displaySave();
+      choice = in.nextInt();
+      if (choice == 1) {
+        System.out.print("Nama file (contoh: abc.txt): ");
+        nama = sc.nextLine();
+        out = new PrintWriter(new File("output/" + nama));
+        writeMatrix(hasil, "output/" + nama);
+        out.close();
+      }
+    } catch (Exception e) {
+      System.out.println("saveFileInverse error");
+    }
+  }
+
+  /* Melakukan save File untuk metode SPL */
+  public static void saveFileSPL(Matrix hasil) {
+    /* KAMUS LOKAL */
+    int choice;
+    String nama;
+    PrintWriter out;
+    /* ALGORITMA */
+    try {
+      displaySave();
+      choice = in.nextInt();
+      if (choice == 1) {
+        System.out.print("Nama file (contoh: abc.txt): ");
+        nama = sc.nextLine();
+        out = new PrintWriter(new File("output/" + nama));
+        for (int i = 0; i < hasil.getRow(); i++) {
+          out.println("X" + (i + 1) + " = " + hasil.getELMT(i, 0));
+        }
+        out.close();
+      }
+    } catch (Exception e) {
+      System.out.println("saveFileSPL error");
+    }
+  }
+
+  /* Melakukan save File untuk metode Regresi */
+  public static void saveFilePolinom(String m1, String m2) {
+    /* KAMUS LOKAL */
+    int choice;
+    String nama;
+    PrintWriter out;
+    /* ALGORITMA */
+    try {
+      displaySave();
+      choice = in.nextInt();
+      if (choice == 1) {
+        System.out.print("Nama file (contoh: abc.txt): ");
+        nama = sc.nextLine();
+        out = new PrintWriter(new File("output/" + nama));
+        out.println("Persamaan polinom yang terbentuk: ");
+        out.println(m1);
+        out.println("\nHasil taksiran polinom: ");
+        out.println(m2);
+        out.close();
+      }
+    } catch (Exception e) {
+      System.out.println("saveFilePolinom error");
+    }
+  }
+
+  /* Melakukan save File untuk metode Regresi */
+  public static void saveFileRegresi(String m1, String m2) {
+    /* KAMUS LOKAL */
+    int choice;
+    String nama;
+    PrintWriter out;
+    /* ALGORITMA */
+    try {
+      displaySave();
+      choice = in.nextInt();
+      if (choice == 1) {
+        System.out.print("Nama file (contoh: abc.txt): ");
+        nama = sc.nextLine();
+        out = new PrintWriter(new File("output/" + nama));
+        out.println("Persamaan regresi yang terbentuk: ");
+        out.println(m1);
+        out.println();
+        out.println(m2);
+        out.close();
+      }
+    } catch (Exception e) {
+      System.out.println("saveFileRegresi error");
+    }
+  }
+
+  /* Melakukan save File untuk solusi Parametik */
+  public static void saveFileParametric(int N, String[] Eq) {
+    /* KAMUS LOKAL */
+    int choice;
+    String nama;
+    PrintWriter out;
+    /* ALGORITMA */
+    try {
+      displaySave();
+      choice = in.nextInt();
+      if (choice == 1) {
+        System.out.print("Nama file (contoh: abc.txt): ");
+        nama = sc.nextLine();
+        out = new PrintWriter(new File("output/" + nama));
+        for (int i = 0; i < N; i++) {
+          out.println("X" + (i + 1) + " = " + Eq[i]);
+        }
+        out.close();
+      }
+    } catch (Exception e) {
+      System.out.println("saveFileSPL error");
+    }
+  }
+
+  /* Melakukan save File secara umum */
+  public static void saveFile(String m) {
+    /* KAMUS LOKAL */
+    int choice;
+    String nama;
+    PrintWriter out;
+    /* ALGORITMA */
+    try {
+      displaySave();
+      choice = in.nextInt();
+      if (choice == 1) {
+        System.out.print("Nama file (contoh: abc.txt): ");
+        nama = sc.nextLine();
+        out = new PrintWriter(new File("output/" + nama));
+        out.write(m);
+        out.close();
+      }
+    } catch (Exception e) {
+      System.out.println("saveFile error");
+    }
+  }    
 }

@@ -6,6 +6,7 @@ import java.util.*;
 public class UserInterface {
     static Scanner in = new Scanner(System.in);
     static Scanner sc = new Scanner(System.in);
+    static String temp;
     public static void main(String[] args) {
         Matrix matrix;
         int m, n;
@@ -66,6 +67,8 @@ public class UserInterface {
     public static void determinanMenu() {
         Scanner in = new Scanner(System.in);
         Matrix mat = Matrix.inputSquareMatrix();
+        String output;
+
         Matrix.printMatrix(mat);
         if (Matrix.isSquare(mat)) {
             Scanner myObj = new Scanner(System.in);
@@ -81,11 +84,15 @@ public class UserInterface {
             switch (choice) {
                 case 1:
                     double det = Matrix.determinanReduksiBaris(mat);
-                    System.out.printf("Determinan dari matriks adalah %f", det);
+                    output = "Determinan reduksi baris adalah %f" + det;
+                    System.out.printf(output);
+                    InputOutput.saveFile(output);
                     break;
                 case 2:
                     double determinant = Matrix.findDeterminantUsingCofactorExpansion(mat);
-                    System.out.printf("Determinan dari matriks adalah %f", determinant);
+                    output = "Determinan dari matriks adalah %f" + determinant;
+                    System.out.printf(output);
+                    InputOutput.saveFile(output);
                     break;
             }
         } else {
@@ -108,15 +115,43 @@ public class UserInterface {
             choice = Integer.parseInt(strchoice);
             switch (choice) {
                 case 1:
-                    double det = Matrix.determinanReduksiBaris(mat);
-                    System.out.println(det);
+                    Matrix hasilM;
+                    double det = Matrix.findDeterminantUsingCofactorExpansion(mat);
+                    //System.out.println(det);
+                    if (det == 0) {
+                        temp = "Tidak ada invers karena determinannya 0";
+                        System.out.println(temp);
+                        InputOutput.saveFile(temp);
+                    }
+                    else{
+                        hasilM = Matrix.InverseDgnGauss(mat);
+                        System.out.println("Hasil Inverse Gauss-Jordan: ");
+                        hasilM.displayMatrix();
+                        InputOutput.saveFileInverse(hasilM);
+                    }
                     break;
                 case 2:
+                    Matrix mHasil;
+                    double detCof = Matrix.findDeterminantUsingCofactorExpansion(mat);
+                    if (detCof == 0) {
+                        temp = "Tidak ada invers karena determinannya 0";
+                        System.out.println(temp);
+                        InputOutput.saveFile(temp);
+                    }
+                    else {
+                        mHasil = Matrix.findInverseUsingAdjugate(mat);
+                        System.out.println("Hasil Inverse Adjoint: ");
+                        mHasil.displayMatrix();
+                        InputOutput.saveFileInverse(mHasil);
+                    }
                     System.out.println("");
                     break;
             }
-        } else {
-            System.out.println("Matriks bukan matriks persegi");
+        } 
+        else {
+            temp = "Matriks bukan matriks persegi";
+            System.out.println(temp);
+            InputOutput.saveFile(temp);
         }
     }
 
