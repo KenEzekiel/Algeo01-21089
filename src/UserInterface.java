@@ -1,8 +1,6 @@
 package src;
 
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Scanner;
 import java.util.*;
 
@@ -62,10 +60,18 @@ public class UserInterface {
                 mat = Matrix.inputMatrixSPLFromKeyboard();
                 break;
             case 2 :
-                System.out.print("Masukkan path file: ");
-                String path = myObj.nextLine();
-                f = new InputOutput(path);
-                mat = f.readFile();
+                Scanner fileScanner;
+                String path = PolynomialInterpolation.readFileName();
+                while (true) {
+                    try {
+                        fileScanner = new Scanner(new FileReader(path));
+                        break;
+                    } catch (FileNotFoundException e) {
+                        System.out.println("File tidak ditemukan.");
+                        path = PolynomialInterpolation.readFileName();
+                    }
+                }
+                mat = InputOutput.fileToMatrix(new File(path));
                 break;
         }
 
