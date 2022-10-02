@@ -1,7 +1,5 @@
 package src;
-
 public class SPL {
-
 
     /* -------- SPL GAUSS -------- */
     /* Menghasilkan Matrix Echelon */
@@ -17,15 +15,11 @@ public class SPL {
         
         /* ALGORITMA */
         // copy Matriks M ke Matriks M1
-        M.copyMatrix(M, mHasil);
+        M.copyMatrix_altern(mHasil);
 
-        // mulai check apakah ada yg perlu dituker dari baris pertama
-        // jika elemen diagonalnya 0, maka baris harus ditukar ddengan baris lain
-        // pada kolom yang sama
         for (i = 0; i < M.getRow(); i++) {
             switchCol = 0;
             switchCheck = true;
-
             while (switchCol < mHasil.getCol() - 1 && switchCheck) {
                 if (mHasil.getELMT(i, switchCol) == 0 || mHasil.getELMT(i, switchCol) != 1) {
 
@@ -33,7 +27,6 @@ public class SPL {
                     //  baris selanjutnya
                     k = i + 1;
                     while ((k < mHasil.getRow()) && (check)) {
-
                         // mencari elemen yang bisa untuk ditukar agar elemen di diagonal tidak 0 atau bernilai 1
                         if (mHasil.getELMT(k, switchCol) != 0 || mHasil.getELMT(k, switchCol) == 1) {
 
@@ -80,10 +73,9 @@ public class SPL {
             }
 
             // membagi sisa baris yang ada 1 utama
-            while (j < mHasil.getCol()) {
+            for (j = 0; j < mHasil.getCol(); j++) {
                 mHasil.setELMT(i, j, (mHasil.getELMT(i, j) / divisor));
             }
-            j++;
 
             // looping pengubahan baris dibawah 1 utama sehingga menjadi 0
             for (l = i + 1; l < mHasil.getRow(); l++) {
@@ -113,19 +105,11 @@ public class SPL {
 
         int i;
 
-        // Jika semua ele di diagonal adalah 1 dan matriks berukuran n x n+1, cth: 3x4
-        // maka solusinya unik
         if (Matrix.isDiagonalSatu(M) && (M.getRow() == M.getCol() - 1)) {
             getGaussSolutions(M);
-            
-        // Jika semua ele di diagonal adalah 1 dan matriks TIDAK berukuran n x n+1, cth: 2x5 ,
-        // maka solusinya pasti banyak (berbentuk parametrik)
         } 
         else if (Matrix.isDiagonalSatu(M) && (M.getRow() != M.getCol() - 1)) {
             getGaussSolutions(M);
-
-        // Jika ada baris yang seluruh elementnya 0, maka
-        // solusinya banyak dan berbentuk paramterik
         } 
         else {
             i = M.getRow() - 1;
@@ -134,18 +118,18 @@ public class SPL {
             while ((i >= 0) && (Matrix.isRowZero(M, i)) && (M.getELMT(i, M.getCol() - 1) == 0)) {
                 i--;
             }
-            // Jika semua elemen matriks normal 0 namun elemen pada kolom terkahir bukan 0,
-            // maka tidak ada solusinya
+
             if (Matrix.isRowZero(M, i) && (M.getELMT(i, M.getCol() - 1) != 0)) {
                 String m = "SPL tidak memiliki solusi";
                 System.out.println(m);
+                InputOutput.saveFile(m);
             } else {
                 getGaussSolutions(M);
             }
         }
     }
 
-
+    /* Solusi SPL PARAMETRIK dengan metode Gauss */
     public static void getGaussSolutions(Matrix M) {
         /* KAMUS */
         int state[] = new int[M.getCol() - 1];
@@ -294,7 +278,7 @@ public class SPL {
             ArrSolString[k] = constParam;
         }
 
-        // Final check bagian yang null
+        // Final check null
         for (i = 0; i < M.getCol() - 1; i++) {
             if (state[i] == 0) {
                 state[i] = 2;
@@ -307,9 +291,10 @@ public class SPL {
         for (i = 0; i < M.getCol() - 1; i++) {
             System.out.println("X" + (i + 1) + " = " + ArrSolString[i]);
         }
+        InputOutput.saveFileParametric(M.getCol() - 1, ArrSolString);
     }
 
-    /*  GAUSS JORDAN */
+    /* --------  GAUSS JORDAN -------- */
     public static Matrix elimGaussJordan(Matrix m) {
         Matrix mHasil, mKoef, mConst;
 
@@ -330,14 +315,14 @@ public class SPL {
 
             // Jika elemen pivot bernilai nol, maka baris ditukar
             if (mKoef.M[pivotRow][pivotCol] == 0) {
-
                 isUnderEmpty = Matrix.isUnderEmpty(Matrix.createMAug(mKoef, mConst), pivotRow, pivotCol);
 
                 if (!isUnderEmpty) {
                     for (j = pivotRow + 1; j < mKoef.row; j++) {
                         if ((mKoef.M[j][pivotCol]) > (mKoef.M[pivotRow][pivotCol])) {
                             mKoef.switchRow(pivotRow, j);
-                            mConst.switchRow(pivotRow, j);                       
+                            mConst.switchRow(pivotRow, j);        
+                            break;
                         }
                     }
                 } else {
@@ -389,6 +374,20 @@ public class SPL {
         Matrix.changeZeroval(mHasil);
 
         return mHasil;
+    }    
+
+    /* -------- INVERS -------- */
+    public static Matrix inverseSPL(Matrix M) {
+
+        Matrix kons = new Matrix(M.getRow(), 1);
+        Matrix koef = new Matrix(M.getRow(), M.getCol() - 1);
+        Matrix mHasil;
+
+        kons = Matrix.getMConst(M);
+        koef = Matrix.getMKoef(M);
+        koef = Matrix.InverseDgnGauss(koef);
+        mHasil = M.multiply_altern(koef, kons);
+        return mHasil;
     }
 
     public static Matrix Cramer(Matrix M) {
@@ -400,29 +399,16 @@ public class SPL {
         /* ALGORITMA */
         mHasil = new Matrix(M.getRow(), 1);
         koef = Matrix.getMKoef(M);
-        detM = Matrix.determinanReduksiBaris(koef);
+        detM = Matrix.detKofaktor(koef);
 
         for (k = 0; k < M.getCol() - 1; k++) {
             koef = Matrix.getMKoef(M);
             for (i = 0; i < M.getRow(); i++) {
                 koef.setELMT(i, k, M.getELMT(i, M.getCol() - 1));
             }
-            detCramer = Matrix.determinanReduksiBaris(koef);
+            detCramer = Matrix.detKofaktor(koef);
             mHasil.setELMT(k, 0, detCramer / detM);
         }
-        return mHasil;
-    }
-    
-    public static Matrix inverseSPL(Matrix M) {
-        /* KAMUS LOKAL */
-        Matrix kons = new Matrix(M.getRow(), 1);
-        Matrix koef = new Matrix(M.getRow(), M.getCol() - 1);
-        Matrix mHasil;
-        /* ALGORITMA */
-        kons = Matrix.getMConst(M);
-        koef = Matrix.getMKoef(M);
-        koef = Matrix.InverseDgnGauss(koef);
-        mHasil = Matrix.Multiply(koef, kons);
         return mHasil;
     }
 }

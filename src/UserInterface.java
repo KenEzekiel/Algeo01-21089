@@ -1,246 +1,415 @@
 package src;
-
-import java.io.*;
-import java.util.Scanner;
 import java.util.*;
 
 public class UserInterface {
-    static Scanner in = new Scanner(System.in);
-    static Scanner sc = new Scanner(System.in);
-    static String temp;
-    public static void main(String[] args) {
-        Matrix matrix;
-        int m, n;
-        System.out.println("Welcome to our main program!\n");
-        mainMenu();
-    }
+    static Scanner in = new Scanner(System.in); // Input String
+    static Scanner sc = new Scanner(System.in); // Input integer/double    
 
-
-    public static void mainMenu() {
-        Scanner myObj = new Scanner(System.in);
-        int choice;
-        System.out.println("MAIN MENU");
-        System.out.print("""
-                1. Sistem Persamaan Linier
-                2. Determinan
-                3. Matriks Balikan
-                4. Intepolasi Polinom
-                5. Interpolasi Bicubic
-                6. Regresi linier berganda
-                7. Keluar
-                """);
-        System.out.println("Masukan pilihan: ");
-        String strchoice = myObj.nextLine();
-        choice = Integer.parseInt(strchoice);
-
-        switch (choice) {
-            case 1 -> sistemPersamaanLinierMenu();
-            case 2 -> determinanMenu();
-            case 3 -> inversMenu();
-            case 4 -> interPolinomMenu();
-            case 5 -> interBicubicMenu();
-            case 6 -> regLinearBergandaMenu();
-        }
-    }
-
-    public static void sistemPersamaanLinierMenu() {
-        Scanner myObj = new Scanner(System.in);
-        int choice;
-        Matrix mat = null;
-        InputOutput f;
-        System.out.print("""
-                Masukan pilihan input:
-                1. Keyboard
-                2. File
-                """);
-        String strchoice = myObj.nextLine();
-        choice = Integer.parseInt(strchoice);
-        switch (choice) {
-            case 1 : 
-                mat = Matrix.inputMatrixSPLFromKeyboard();
-                break;
-            case 2 :
-                Scanner fileScanner;
-                String path = PolynomialInterpolation.readFileName();
-                while (true) {
-                    try {
-                        fileScanner = new Scanner(new FileReader(path));
-                        break;
-                    } catch (FileNotFoundException e) {
-                        System.out.println("File tidak ditemukan.");
-                        path = PolynomialInterpolation.readFileName();
-                    }
-                }
-                mat = InputOutput.fileToMatrix(new File(path));
-                break;
-        }
-
-        System.out.println("SISTEM PERSAMAAN LINIER");
-        System.out.print("""
-                1. Metode Eliminasi Gauss
-                2. Metode Eliminasi Gauss-Jordam
-                3. Metode Matriks Balikan
-                4. Metode Cramer
-                """);
-        System.out.println("Masukan pilihan: ");
-        strchoice = myObj.nextLine();
-        choice = Integer.parseInt(strchoice);
-        switch(choice) {
-            case 1 -> SPL.GaussElimination(mat);
-            case 2 -> SPL.elimGaussJordan(mat);
-            case 3 -> SPL.inverseSPL(mat);
-            case 4 -> SPL.Cramer(mat);
-        }
-    }
-
-    public static void determinanMenu() {
-        Scanner in = new Scanner(System.in);
-        Matrix mat = Matrix.inputSquareMatrix();
-        String output;
-
-        Matrix.printMatrix(mat);
-        if (Matrix.isSquare(mat)) {
-            Scanner myObj = new Scanner(System.in);
-            int choice;
-            System.out.println("DETERMINAN MATRIKS");
-            System.out.print("""
-                    1. Metode Reduksi Baris
-                    2. Metode Ekspansi Kofaktor
-                    """);
-            System.out.println("Masukan pilihan: ");
-            String strchoice = myObj.nextLine();
-            choice = Integer.parseInt(strchoice);
-            switch (choice) {
-                case 1:
-                    double det = Matrix.determinanReduksiBaris(mat);
-                    output = "Determinan reduksi baris adalah %f" + det;
-                    System.out.printf(output);
-                    InputOutput.saveFile(output);
-                    break;
-                case 2:
-                    double determinant = Matrix.findDeterminantUsingCofactorExpansion(mat);
-                    output = "Determinan dari matriks adalah %f" + determinant;
-                    System.out.printf(output);
-                    InputOutput.saveFile(output);
-                    break;
-            }
-        } else {
-            System.out.println("Matriks bukan matriks persegi");
-        }
-    }
-
-    public static void inversMenu() {
-        Matrix mat = Matrix.inputMatrix();
-        if (mat.isSquare(mat)) {
-            Scanner myObj = new Scanner(System.in);
-            int choice;
-            System.out.println("INVERS MATRIKS");
-            System.out.print("""
-                    1. Metode Reduksi Baris
-                    2. Metode Ekspansi Kofaktor
-                    """);
-            System.out.println("Masukan pilihan: ");
-            String strchoice = myObj.nextLine();
-            choice = Integer.parseInt(strchoice);
-            switch (choice) {
-                case 1:
-                    Matrix hasilM;
-                    double det = Matrix.findDeterminantUsingCofactorExpansion(mat);
-                    //System.out.println(det);
-                    if (det == 0) {
-                        temp = "Tidak ada invers karena determinannya 0";
-                        System.out.println(temp);
-                        InputOutput.saveFile(temp);
-                    }
-                    else{
-                        hasilM = Matrix.InverseDgnGauss(mat);
-                        System.out.println("Hasil Inverse Gauss-Jordan: ");
-                        hasilM.displayMatrix();
-                        InputOutput.saveFileInverse(hasilM);
-                    }
-                    break;
-                case 2:
-                    Matrix mHasil;
-                    double detCof = Matrix.findDeterminantUsingCofactorExpansion(mat);
-                    if (detCof == 0) {
-                        temp = "Tidak ada invers karena determinannya 0";
-                        System.out.println(temp);
-                        InputOutput.saveFile(temp);
-                    }
-                    else {
-                        mHasil = Matrix.findInverseUsingAdjugate(mat);
-                        System.out.println("Hasil Inverse Adjoint: ");
-                        mHasil.displayMatrix();
-                        InputOutput.saveFileInverse(mHasil);
-                    }
-                    System.out.println("");
-                    break;
-            }
-        } 
-        else {
-            temp = "Matriks bukan matriks persegi";
-            System.out.println(temp);
-            InputOutput.saveFile(temp);
-        }
-    }
-
-    public static void interPolinomMenu() {
-        PolynomialInterpolation.main();
-    }
-
-    public static void interBicubicMenu() {
-        Scanner myObj = new Scanner(System.in);
-        int choice;
-        System.out.println("SISTEM PERSAMAAN LINIER");
-        System.out.print("""
-                1. 
-                """);
-        System.out.println("Masukan pilihan: ");
-        String strchoice = myObj.nextLine();
-        choice = Integer.parseInt(strchoice);
-        switch(choice) {
-
-        }
-    }
-    public static void displayType() {
+    public static void displayTipeInput() {
         System.out.println();
-        System.out.println("Pilih tipe masukan");
+        System.out.println("Pilih tipe masukan: ");
         System.out.println("1. Keyboard");
         System.out.println("2. File");
-        System.out.print("Masukkan: ");
-      }
-    public static void regLinearBergandaMenu() {
-        //int choice;
-        int m, n, type;
-        Matrix a, k;
-        InputOutput f;
-
-        displayType();
-        type = sc.nextInt();
-        if (type == 1) {
-            System.out.print(">Masukkan jumlah peubah x: ");
-            n = sc.nextInt();
-            System.out.print(">Masukkan jumlah data sampel: ");
-            m = sc.nextInt();
-            System.out.println(">Masukkan data sampel: ");
-            a = new Matrix(m, n + 1);
-            a.readMatrix();
-            System.out.println(">Masukkan nilai X yang akan ditaksir: ");
-            k = new Matrix(1, n);
-            k.readMatrix();
-        } 
-        else {
-            System.out.print("Masukkan path file: ");
-            String path = in.nextLine();
-            f = new InputOutput(path);
-            a = f.readFile();
-            k = new Matrix(1, a.getCol() - 1);
-            System.out.println("Masukkan nilai X yang akan ditaksir: ");
-            k.readMatrixRegresi(a.getCol() - 1);
-        }
-        RegresiLinier.regresiGandaSPL(a, k);
+        System.out.print("Pilihan: ");
     }
-    private static int nextInt() {
-        return 0;
+
+    public static void main(String[] args) {
+        System.out.println("Welcome to our main program!\n");
+
+        boolean isRuning = true;
+
+        while (isRuning){
+            String message;
+            String choice;
+            int byk_row, byk_col, tipeInput, n, m;
+            Matrix ab, a, hasilM, k;
+            double hasil;
+            InputOutput f;
+            String temp;
+
+            System.out.println();
+
+            System.out.println("MAIN MENU");
+            System.out.print("""
+                    1. Sistem Persamaan Linier
+                    2. Determinan
+                    3. Matriks Balikan
+                    4. Intepolasi Polinom
+                    5. Interpolasi Bicubic
+                    6. Regresi linier berganda
+                    7. Keluar
+                    """);
+            System.out.println("Masukan pilihan: ");
+            choice = in.nextLine();
+
+            switch (choice) {
+                case "1" -> {
+                    System.out.println(" --SISTEM PERSAMAAN LINIER-- ");
+                    System.out.print("""
+                            1. Metode Eliminasi Gauss
+                            2. Metode Eliminasi Gauss-Jordam
+                            3. Metode Matriks Balikan
+                            4. Metode Cramer
+                            """);
+                    System.out.println("Masukan pilihan: ");
+                    choice = in.nextLine();
+                    if (choice.equals("0")) {
+                        break;
+                    } else {
+                        displayTipeInput();
+                        tipeInput = sc.nextInt();
+
+                        if (tipeInput == 1) {
+                            System.out.print("Banyak Baris: ");
+                            byk_row = sc.nextInt();
+                            System.out.print("Banyak Kolom: ");
+                            byk_col = sc.nextInt();
+                            System.out.println("Input Matriks: ");
+                            ab = new Matrix(byk_row, byk_col);
+                            ab.readMatrix();
+                        } else {
+                            System.out.print("Masukkan path file: ");
+                            String path = in.nextLine();
+                            f = new InputOutput(path);
+                            ab = f.readFile();
+                        }
+
+                        System.out.println();
+                        switch (choice) {
+                            case "1":
+                                hasilM = SPL.getRowEchelon(ab);
+                                SPL.GaussElimination(hasilM);
+                                break;
+
+                            case "2":
+                                hasilM = SPL.elimGaussJordan(ab);
+                                SPL.GaussElimination(hasilM);
+                                break;
+
+                            case "3":
+                                if ((ab.getCol() - 1 != ab.getRow())) {
+                                    temp = "Tidak ada invers karena tidak ada determinan";
+                                    System.out.println(temp);
+                                    InputOutput.saveFile(temp);
+                                } else {
+                                    hasil = Matrix.detKofaktor(Matrix.getMKoef(ab));
+                                    if (hasil == 0) {
+                                        temp = "Tidak ada invers karena determinan = 0";
+                                        System.out.println(temp);
+                                        InputOutput.saveFile(temp);
+                                    } else {
+                                        hasilM = SPL.inverseSPL(ab);
+                                        System.out.println("Solusi Inverse: ");
+                                        for (int i = 0; i < hasilM.getRow(); i++) {
+                                            System.out.printf("X" + (i + 1) + " = %.6f", hasilM.getELMT(i, 0));
+                                            System.out.println();
+                                        }
+                                        InputOutput.saveFileSPL(hasilM);
+                                    }
+                                }
+                                break;
+
+                            case "4":
+                                if ((ab.getCol() - 1 != ab.getRow())) {
+                                    temp = "Metode Cramer gagal karena tidak ada determinan";
+                                    System.out.println(temp);
+                                    InputOutput.saveFile(temp);
+                                } else {
+                                    hasil = Matrix.detKofaktor(Matrix.getMKoef(ab));
+                                    if (hasil == 0) {
+                                        temp = "Metode Cramer gagal karenaa determinan = 0";
+                                        System.out.println(temp);
+                                        InputOutput.saveFile(temp);
+                                    } else {
+                                        hasilM = SPL.Cramer(ab);
+                                        System.out.println("Solusi Cramer: ");
+                                        for (int i = 0; i < hasilM.getRow(); i++) {
+                                            System.out.printf("X" + (i + 1) + " = " + hasilM.getELMT(i, 0));
+                                            System.out.println();
+                                        }
+                                        InputOutput.saveFileSPL(hasilM);
+                                    }
+                                }
+                                break;
+                        }
+
+                        System.out.println("Apakah anda ingin keluar?");
+                        System.out.println("1. Ya");
+                        System.out.println("0. Kembali ke menu utama");
+                        System.out.print("Pilihan: ");
+                        choice = in.nextLine();
+
+                        switch (choice) {
+                            case "1":
+                                isRuning = false;
+                                break;
+                            case "0":
+                                break;
+                            default:
+                                isRuning = false;
+                                break;
+                        }
+                        break;
+                    }
+                }
+                case "2" -> {
+                    System.out.println();
+                    System.out.println(" --DETERMINAN-- ");
+                    System.out.println("1. Metode ekspansi kofaktor");
+                    System.out.println("2. Metode reduksi baris");
+                    System.out.println("0. Kembali ke menu utama");
+                    System.out.print("Pilihan: ");
+                    choice = in.nextLine();
+                    if (choice.equals("0")) {
+                        break;
+                    } else {
+                        displayTipeInput();
+                        tipeInput = sc.nextInt();
+
+                        if (tipeInput == 1) {
+                            System.out.print("Masukkan N: ");
+                            byk_row = sc.nextInt();
+                            System.out.println("Matriks: ");
+                            a = new Matrix(byk_row, byk_row);
+                            a.readMatrix();
+                        } else {
+                            System.out.print("Masukkan path file: ");
+                            String path = in.nextLine();
+                            f = new InputOutput(path);
+                            a = f.readFile();
+                        }
+
+                        switch (choice) {
+                            case "1":
+                                hasil = Matrix.detKofaktor(a);
+                                System.out.println();
+
+                                message = "Determinan Kofaktor = " + hasil;
+                                System.out.println(message);
+                                InputOutput.saveFile(message);
+                                break;
+
+                            case "2":
+                                hasil = Matrix.determinanReduksiBaris(a);
+                                System.out.println();
+                                message = "Determinan Reduksi = " + hasil;
+                                System.out.println(message);
+                                InputOutput.saveFile(message);
+                                break;
+                        }
+
+                        System.out.println("Apakah anda ingin keluar?");
+                        System.out.println("1. Ya");
+                        System.out.println("0. Kembali ke menu utama");
+                        System.out.print("Pilihan: ");
+                        choice = in.nextLine();
+
+                        switch (choice) {
+                            case "1":
+                                isRuning = false;
+                                break;
+                            case "0":
+                                break;
+                            default:
+                                isRuning = false;
+                                break;
+                        }
+                        break;
+                    }
+                }
+                case "3" -> {
+                    System.out.println();
+                    System.out.println(" --MATRIKS BALIKAN-- ");
+                    System.out.println("1. Metode Gauss-Jordan");
+                    System.out.println("2. Metode Adjoint");
+                    System.out.println("0. Kembali ke menu utama");
+                    System.out.print("Pilihan: ");
+                    choice = in.nextLine();
+                    if (choice.equals("0")) {
+                        break;
+                    } else {
+                        displayTipeInput();
+                        tipeInput = sc.nextInt();
+
+                        if (tipeInput == 1) {
+                            System.out.print("Masukkan N: ");
+                            byk_row = sc.nextInt();
+                            System.out.println("Matriks: ");
+                            a = new Matrix(byk_row, byk_row);
+                            a.readMatrix();
+                        } else {
+                            System.out.print("Masukkan path file: ");
+                            String path = in.nextLine();
+                            f = new InputOutput(path);
+                            a = f.readFile();
+                        }
+
+                        System.out.println();
+                        switch (choice) {
+                            case "1":
+                                hasil = Matrix.detKofaktor(a);
+                                if (hasil == 0) {
+                                    temp = "Tidak ada matrix balikan karena determinan = 0";
+                                    System.out.println(temp);
+                                    InputOutput.saveFile(temp);
+                                } else {
+                                    hasilM = Matrix.findInverseUsingAdjugate(a);
+                                    System.out.println("Hasil Inverse Gauss-Jordan: ");
+                                    hasilM.displayMatrix();
+                                    InputOutput.saveFileInverse(hasilM);
+                                }
+                                break;
+
+                            case "2":
+                                hasil = Matrix.detKofaktor(a);
+                                if (hasil == 0) {
+                                    temp = "Tidak ada matrix balikan karena determinan = 0";
+                                    System.out.println(temp);
+                                    InputOutput.saveFile(temp);
+                                } else {
+                                    hasilM = Matrix.InverseDgnGauss(a);
+                                    System.out.println("Hasil Inverse Adjoint: ");
+                                    hasilM.displayMatrix();
+                                    InputOutput.saveFileInverse(hasilM);
+                                }
+                                break;
+                        }
+                        System.out.println();
+                        System.out.println("Apakah anda ingin keluar?");
+                        System.out.println("1. Ya");
+                        System.out.println("0. Kembali ke menu utama");
+                        System.out.print("Pilihan: ");
+                        choice = in.nextLine();
+
+                        switch (choice) {
+                            case "1":
+                                isRuning = false;
+                                break;
+                            case "0":
+                                break;
+                            default:
+                                isRuning = false;
+                                break;
+                        }
+                        break;
+                    }
+                }
+                case "4" -> {
+                    displayTipeInput();
+                    tipeInput = sc.nextInt();
+
+                    //if (tipeInput == 1){
+
+                    //}
+                    //else {
+
+                    //}
+
+                    //InterpolasiBikubik.main();
+
+                    System.out.println("Apakah anda ingin keluar?");
+                    System.out.println("1. Ya");
+                    System.out.println("0. Kembali ke menu utama");
+                    System.out.print("Pilihan: ");
+                    choice = in.nextLine();
+                    switch (choice) {
+                        case "1":
+                            isRuning = false;
+                            break;
+                        case "0":
+                            break;
+                        default:
+                            isRuning = false;
+                            break;
+                    }
+                }
+                case "5" -> {
+                    displayTipeInput();
+                    tipeInput = sc.nextInt();
+                    if (tipeInput == 1) {
+                        PolynomialInterpolation.main();
+                        //System.out.print("Masukkan jumlah data: ");
+                        //n = sc.nextInt();
+                        //a = new Matrix(n, 2);
+                        //System.out.println("Masukkan Data: ");
+                        //a.readMatrix();
+                        //System.out.print("Masukkan nilai yang ditaksir: ");
+                        //x = sc.nextDouble();
+                    } else {
+                        PolynomialInterpolation.main();
+                        //System.out.print("Masukkan path file: ");
+                        //String path = in.nextLine();
+                        //f = new InputOutput(path);
+                        //a = f.readFile();
+                        //System.out.print("Masukkan nilai yang ditaksir: ");
+                        //x = sc.nextDouble();
+                    }
+                    //PolynomialInterpolation.main(a, x);
+
+                    System.out.println();
+                    System.out.println("Apakah anda ingin keluar program?");
+                    System.out.println("1. Ya");
+                    System.out.println("0. Kembali ke menu utama");
+                    System.out.print(">Masukan: ");
+                    choice = in.nextLine();
+                    switch (choice) {
+                        case "1":
+                            isRuning = false;
+                            break;
+                        case "0":
+                            break;
+                        default:
+                            isRuning = false;
+                            break;
+                    }
+                }
+                case "6" -> {
+                    displayTipeInput();
+                    tipeInput = sc.nextInt();
+                    if (tipeInput == 1) {
+                        System.out.print("Masukkan jumlah peubah x: ");
+                        n = sc.nextInt();
+                        System.out.print("Masukkan jumlah data sampel: ");
+                        m = sc.nextInt();
+                        System.out.println("Masukkan data sampel: ");
+                        a = new Matrix(m, n + 1);
+                        a.readMatrix();
+                        System.out.println("Masukkan nilai X yang akan ditaksir: ");
+                        k = new Matrix(1, n);
+                        k.readMatrix();
+                    } else {
+                        System.out.print("Masukkan path file: ");
+                        String path = in.nextLine();
+                        f = new InputOutput(path);
+                        a = f.readFile();
+                        k = new Matrix(1, a.getCol() - 1);
+                        System.out.println("Masukkan nilai X yang akan ditaksir: ");
+                        k.readMatrixRegresi(a.getCol() - 1);
+                    }
+                    RegresiLinear.regresiGandaSPL(a, k);
+                    System.out.println("Apakah anda ingin keluar?");
+                    System.out.println("1. Ya");
+                    System.out.println("0. Kembali ke menu utama");
+                    System.out.print("Pilihan: ");
+                    choice = in.nextLine();
+                    switch (choice) {
+                        case "1":
+                            isRuning = false;
+                            break;
+                        case "0":
+                            break;
+                        default:
+                            isRuning = false;
+                            break;
+                    }
+                }
+                case "7" -> isRuning = false;
+                default -> isRuning = false;
+            }
+                }
+        System.out.println();
+        System.out.println("==========================");
+        System.out.println("      SAMPAI JUMPA ^^     ");
+        System.out.println("==========================");
     }
 }
