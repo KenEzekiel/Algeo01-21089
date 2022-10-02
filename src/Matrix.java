@@ -63,6 +63,25 @@ public class Matrix {
         return matrix;
     }
 
+    public static Matrix inputMatrixSPLFromKeyboard() {
+
+        Scanner myObj = new Scanner(System.in);
+        int choice;
+        System.out.println("Masukkan jumlah baris matriks: ");
+        String mInt = myObj.nextLine();
+        System.out.println("Masukkan jumlah kolom matriks: ");
+        String nInt = myObj.nextLine();
+
+        int m = Integer.parseInt(mInt);
+        int n = Integer.parseInt(nInt);
+
+        Matrix matrix = new Matrix(m, n);
+
+        matrix = inputMatrixFromKeyboard();
+
+        return matrix;
+    }
+
     public static Matrix inputSquareMatrix() {
 
         Scanner myObj = new Scanner(System.in);
@@ -107,7 +126,7 @@ public class Matrix {
         String data;
         String out = "";
 
-        System.out.println("Masukan matriks dipisahkan oleh spasi");
+        System.out.println("Masukan matriks dipisahkan oleh spasi, diakhiri double enter");
         while (loop) {
             data = in.nextLine();
             if (data.isEmpty()) {
@@ -245,7 +264,14 @@ public class Matrix {
     public double getELMT(int i, int j) {
         return (this.M[i][j]);
     }
-    
+
+    public double[] getRow(int row) {
+        return this.M[row];
+    }
+
+    public void setRow(int row, double[] data) {
+        this.M[row] = data;
+    }
     /* OPERANDS */
     public void switchRow(int i1, int i2) {
         /* KAMUS LOKAL */

@@ -28,6 +28,8 @@ public class InputOutput {
         }
         Matrix out = new Matrix(data.length, data[0].length);
         out.inputDataFromDouble(data);
+
+        Matrix.printMatrix(out);
         return out;
     }
 

@@ -1,5 +1,8 @@
 package src;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 import java.util.*;
 
@@ -43,9 +46,29 @@ public class UserInterface {
     }
 
     public static void sistemPersamaanLinierMenu() {
-        Matrix mat = Matrix.inputMatrix();
         Scanner myObj = new Scanner(System.in);
         int choice;
+        Matrix mat = null;
+        InputOutput f;
+        System.out.print("""
+                Masukan pilihan input:
+                1. Keyboard
+                2. File
+                """);
+        String strchoice = myObj.nextLine();
+        choice = Integer.parseInt(strchoice);
+        switch (choice) {
+            case 1 : 
+                mat = Matrix.inputMatrixSPLFromKeyboard();
+                break;
+            case 2 :
+                System.out.print("Masukkan path file: ");
+                String path = myObj.nextLine();
+                f = new InputOutput(path);
+                mat = f.readFile();
+                break;
+        }
+
         System.out.println("SISTEM PERSAMAAN LINIER");
         System.out.print("""
                 1. Metode Eliminasi Gauss
@@ -54,7 +77,7 @@ public class UserInterface {
                 4. Metode Cramer
                 """);
         System.out.println("Masukan pilihan: ");
-        String strchoice = myObj.nextLine();
+        strchoice = myObj.nextLine();
         choice = Integer.parseInt(strchoice);
         switch(choice) {
             case 1 -> SPL.GaussElimination(mat);
