@@ -294,13 +294,13 @@ public class UserInterface {
                         break;
                     }
                 }
-                case "5" -> {
-                    InterpolasiBikubik.main(args);
-
-                    System.out.println("Apakah anda ingin keluar?");
+                case "4" -> {
+                    PolynomialInterpolation.main();
+                    System.out.println();
+                    System.out.println("Apakah anda ingin keluar program?");
                     System.out.println("1. Ya");
                     System.out.println("0. Kembali ke menu utama");
-                    System.out.print("Pilihan: ");
+                    System.out.print(">Masukan: ");
                     choice = in.nextLine();
                     switch (choice) {
                         case "1":
@@ -313,34 +313,13 @@ public class UserInterface {
                             break;
                     }
                 }
-                case "4" -> {
-                    displayTipeInput();
-                    tipeInput = sc.nextInt();
-                    if (tipeInput == 1) {
-                        PolynomialInterpolation.main();
-                        //System.out.print("Masukkan jumlah data: ");
-                        //n = sc.nextInt();
-                        //a = new Matrix(n, 2);
-                        //System.out.println("Masukkan Data: ");
-                        //a.readMatrix();
-                        //System.out.print("Masukkan nilai yang ditaksir: ");
-                        //x = sc.nextDouble();
-                    } else {
-                        PolynomialInterpolation.main();
-                        //System.out.print("Masukkan path file: ");
-                        //String path = in.nextLine();
-                        //f = new InputOutput(path);
-                        //a = f.readFile();
-                        //System.out.print("Masukkan nilai yang ditaksir: ");
-                        //x = sc.nextDouble();
-                    }
-                    //PolynomialInterpolation.main(a, x);
+                case "5" -> {
+                    InterpolasiBikubik.main(args);
 
-                    System.out.println();
-                    System.out.println("Apakah anda ingin keluar program?");
+                    System.out.println("Apakah anda ingin keluar?");
                     System.out.println("1. Ya");
                     System.out.println("0. Kembali ke menu utama");
-                    System.out.print(">Masukan: ");
+                    System.out.print("Pilihan: ");
                     choice = in.nextLine();
                     switch (choice) {
                         case "1":
