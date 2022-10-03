@@ -14,6 +14,7 @@ public class PolynomialInterpolation {
         Scanner choiceScanner, xScanner;
         int choice;
         double x, estimation;
+        String equationString, estimationString, saveString;
         Matrix pointsMatrix, systemOfLinearEquations, solutionMatrix;
 
         // ALGORITHM
@@ -54,8 +55,8 @@ public class PolynomialInterpolation {
         solutionMatrix = findSolutionMatrix(systemOfLinearEquations);
 
         System.out.print("Persamaan interpolasi polinomial adalah:\n");
-        printPolynomialInterpolationEquation(solutionMatrix);
-        System.out.print("\n");
+        equationString = getPolynomialInterpolationEquation(solutionMatrix);
+        System.out.println(equationString);
 
         xScanner = new Scanner(System.in);
         while (true) {
@@ -72,7 +73,13 @@ public class PolynomialInterpolation {
 
         estimation = interpolate(solutionMatrix, x);
 
-        System.out.printf("Estimasi dari f(%f) adalah %f\n", x, estimation);
+        estimationString = String.format("Estimasi dari f(%f) adalah %f\n", x, estimation);
+
+        System.out.println(estimationString);
+
+        saveString = String.format("%s\n%s", equationString, estimationString);
+
+        InputOutput.saveFile(saveString);
     }
 
     /* Procedure to check if the parameter choice is 1 or 2.
@@ -252,33 +259,40 @@ public class PolynomialInterpolation {
 
     /* Prints the polynomial interpolation equation to the screen.
     Parameter systemOfLinearEquations is a matrix containing the system of linear equations */
-    public static void printPolynomialInterpolationEquation(Matrix solutionMatrix) {
+    public static String getPolynomialInterpolationEquation(Matrix solutionMatrix) {
         // DICTIONARY
+        String equation;
         int i, j, n;
 
         // ALGORITHM
+        equation = "";
         n = solutionMatrix.getRow() - 1;
 
-        System.out.print("f(x) =");
+        equation += String.format("f(x) =");
         for (i = solutionMatrix.getRow() - 1; i >= 0; i--) {
             for (j = 0; j < solutionMatrix.getCol(); j++) {
                 if (solutionMatrix.getELMT(i, j) < 0) {
-                    System.out.printf(" - %fx^%d", - solutionMatrix.getELMT(i, j), n);
+                    equation += String.format(" - %fx^%d", - solutionMatrix.getELMT(i, j), n);
                 }
                 else {
                     if (i == 0) {
-                        System.out.printf(" + %f", solutionMatrix.getELMT(i, j));
+                        equation += String.format(" + %f", solutionMatrix.getELMT(i, j));
                     }
                     else if (i == 1) {
-                        System.out.printf(" + %fx", solutionMatrix.getELMT(i, j));
+                        equation += String.format(" + %fx", solutionMatrix.getELMT(i, j));
+                    }
+                    else if (i == solutionMatrix.getRow() - 1) {
+                        equation += String.format(" %fx^%d", solutionMatrix.getELMT(i, j), n);
                     }
                     else {
-                        System.out.printf(" + %fx^%d", solutionMatrix.getELMT(i, j), n);
+                        equation += String.format(" + %fx^%d", solutionMatrix.getELMT(i, j), n);
                     }
                 }
             }
             n--;
         }
+
+        return equation;
     }
 
     /* Returns the estimation of value x if interpolated to the polynomial interpolation equation */
