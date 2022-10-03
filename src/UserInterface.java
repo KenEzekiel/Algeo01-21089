@@ -78,11 +78,13 @@ public class UserInterface {
                         switch (choice) {
                             case "1":
                                 hasilM = SPL.getRowEchelon(ab);
+                                hasilM.displayMatrix();
                                 SPL.GaussElimination(hasilM);
                                 break;
 
                             case "2":
-                                hasilM = SPL.elimGaussJordan(ab);
+                                hasilM = SPL.getReducedRowEchelon(ab);
+                                hasilM.displayMatrix();
                                 SPL.GaussElimination(hasilM);
                                 break;
 

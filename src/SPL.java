@@ -100,6 +100,78 @@ public class SPL {
         return mHasil;
     }
 
+    /* Menghasilkan Matrix Echelon Tereduksi*/
+    public static Matrix getReducedRowEchelon(Matrix M) {
+        // M adalah Matriks eselon baris
+        /* KAMUS */
+        int i, j, k, l, m, switchCol;
+        int idxColMain = 0; // set = 0, jika element pertama bukan 1 maka akan diganti
+
+        Matrix mHasil = new Matrix(M.getRow(), M.getCol());
+        boolean check, divisorCheck, opRowCheck1 = true, opRowCheck2, switchCheck;
+        double subtractor, kVal;
+
+        /* ALGORITMA */
+        // copy Matriks M ke Matriks M1
+        M.copyMatrix_altern(mHasil);
+
+        for (i = M.getRow() - 1; i > 0; i--) {
+
+            // mencari 1 utama, tidak perlu diperiksa apabila sudah bernilai 1
+            // run setelah sisa baris dibawah 1 utama sudah 0
+            subtractor = 1;
+            divisorCheck = false;
+            opRowCheck1 = true;
+            j = 0;
+            while (j < M.getCol() - 1 && (divisorCheck == false) && opRowCheck1) {
+                if ((mHasil.getELMT(i, j) != 0)) {
+
+                    // Set pembagi ke angka yang akan dijadikan 1 utama
+                    subtractor = mHasil.getELMT(i - 1, j);
+                    // idxColMain ke j = letak kolom 1 utama
+                    idxColMain = j;
+                    // check = true agar tidak di loop dan menghasilkan pembagi berbeda
+                    divisorCheck = true;
+                    // opRowFlag1 = false sehingga tidak run apabila element dibawah 1 utama belum 0
+                    opRowCheck1 = false;
+
+                } //asumsi sudah 1
+                else if (mHasil.getELMT(i, j) == 1) {
+                    idxColMain = j;
+                    divisorCheck = false;
+                }
+                j++;
+
+            }
+
+            // membagi sisa baris yang ada 1 utama
+            for (j = 0; j < mHasil.getCol(); j++) {
+                mHasil.setELMT(i, j, (mHasil.getELMT(i, j) - subtractor));
+            }
+
+            // looping pengubahan baris dibawah 1 utama sehingga menjadi 0
+            /*for (l = i - 1; l >= 0; l--) {
+                opRowCheck2 = true;
+                m = idxColMain;
+
+                // operationRow dilakukan jika element dibawah 1 utama belum 0
+                while (m < mHasil.getCol() - 1 && opRowCheck2) {
+                    if (mHasil.getELMT(l, m) == 0) {
+                        opRowCheck2 = false;
+                    }
+                    else if (mHasil.getELMT(l, m) != 0) {
+                        kVal = (mHasil.getELMT(l, m) / mHasil.getELMT(i, m));
+                        mHasil.rowOperations(l, i, kVal);
+                        opRowCheck2 = false;
+                    }
+                    m++;
+                }
+            }*/
+        }
+        Matrix.changeZeroval(mHasil);
+        return mHasil;
+    }
+
     /* Menghasilkan solusi SPL dengan metode Gauss */
     public static void GaussElimination(Matrix M) {
 
@@ -115,7 +187,7 @@ public class SPL {
             i = M.getRow() - 1;
 
             // jika semua syarat terpenuhi
-            while ((i >= 0) && (Matrix.isRowZero(M, i)) && (M.getELMT(i, M.getCol() - 1) == 0)) {
+            while ((i > 0) && (Matrix.isRowZero(M, i)) && (M.getELMT(i, M.getCol() - 1) == 0)) {
                 i--;
             }
 
@@ -372,6 +444,7 @@ public class SPL {
         mHasil = Matrix.createMAug(mKoef, mConst);
         Matrix.switchRowEmpty(mHasil);
         Matrix.changeZeroval(mHasil);
+        mHasil.displayMatrix();
 
         return mHasil;
     }    
