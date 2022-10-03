@@ -15,6 +15,7 @@ public class InterpolasiBikubik {
         Matrix bikubik;
         String file = readFileName();
         Scanner fileScanner;
+        Scanner input = new Scanner(System.in);
         while (true) {
             try {
                 fileScanner = new Scanner(new FileReader(file));
@@ -33,25 +34,65 @@ public class InterpolasiBikubik {
 
         y = getY(file);
 
+        System.out.println("Matriks bikubik: ");
         bikubik.displayMatrix();
+        System.out.println("nilai x dan y: ");
         System.out.println(x + " " + y);
 
         Matrix func = readFFromFile(file);
+        System.out.println("Matriks fungsi: ");
         func.displayMatrix();
         System.out.println("");
 
         Matrix X = new Matrix(16, 16);
         getMatrixX(X);
+        System.out.println("Matriks X: ");
         X.displayMatrix();
 
         Matrix invX = Matrix.InverseDgnGauss(X);
+        System.out.println("Matriks Inverse X: ");
         invX.displayMatrix();
 
         Matrix A = getMatrixA(func, invX);
+        System.out.println("Matriks A: ");
         A.displayMatrix();
         System.out.println("");
         double hasil = getValue(A, x, y);
-        System.out.println("Hasil : " + hasil);
+
+        System.out.print("""
+                Bagaimana Anda ingin output dikeluarkan?
+                
+                1. Ditampilkan di Layar
+                2. Disimpan di file
+                """);
+        int choice = Integer.parseInt(input.nextLine());
+        while (true) {
+            if (choice == 1 || choice == 2) {
+                break;
+            } else {
+                System.out.println("Input salah");
+                System.out.print("""
+                Bagaimana Anda ingin output dikeluarkan?
+                
+                1. Ditampilkan di Layar
+                2. Disimpan di file
+                """);
+                choice = Integer.parseInt(input.nextLine());
+            }
+
+        }
+
+        switch (choice) {
+            case 1 :
+                System.out.println("Hasil : " + hasil);
+                break;
+            case 2 :
+                String strhasil = Double.toString(hasil);
+                InputOutput.saveFile(strhasil);
+                break;
+        }
+
+
     }
 
     public static void getMatrixX(Matrix XVar) {

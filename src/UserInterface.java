@@ -294,18 +294,8 @@ public class UserInterface {
                         break;
                     }
                 }
-                case "4" -> {
-                    displayTipeInput();
-                    tipeInput = sc.nextInt();
-
-                    //if (tipeInput == 1){
-
-                    //}
-                    //else {
-
-                    //}
-
-                    //InterpolasiBikubik.main();
+                case "5" -> {
+                    InterpolasiBikubik.main(args);
 
                     System.out.println("Apakah anda ingin keluar?");
                     System.out.println("1. Ya");
@@ -323,7 +313,7 @@ public class UserInterface {
                             break;
                     }
                 }
-                case "5" -> {
+                case "4" -> {
                     displayTipeInput();
                     tipeInput = sc.nextInt();
                     if (tipeInput == 1) {
