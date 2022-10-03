@@ -247,7 +247,7 @@ public class SPL {
                                         } else {
                                             constParam += "-" + Math.abs(tempValue) + answer[1];
                                         }
-                                        // Jika error, maka output seperti biasa dan dihitung manual
+                                        // Jika error, maka test.output seperti biasa dan dihitung manual
                                     } catch (Exception e) {
                                         constParam += "-" + Math.abs(M.getELMT(i, j)) + "(" + ArrSolString[j] + ")";
                                     }

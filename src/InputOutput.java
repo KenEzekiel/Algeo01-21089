@@ -172,8 +172,8 @@ public class InputOutput {
         if (choice == 1) {
             System.out.print("Nama file (contoh: abc.txt): ");
             nama = sc.nextLine();
-            out = new PrintWriter(new File("output/" + nama));
-            writeMatrix(hasil, "output/" + nama);
+            out = new PrintWriter(new File("test/output/" + nama));
+            writeMatrix(hasil, "test/output/" + nama);
             out.close();
         }
         } catch (Exception e) {
@@ -194,7 +194,7 @@ public class InputOutput {
           if (choice == 1) {
             System.out.print("Nama file (contoh: abc.txt): ");
             nama = sc.nextLine();
-            out = new PrintWriter(new File("output/" + nama));
+            out = new PrintWriter(new File("test/output/" + nama));
             for (int i = 0; i < hasil.getRow(); i++) {
               out.println("X" + (i + 1) + " = " + hasil.getELMT(i, 0));
             }
@@ -218,7 +218,7 @@ public class InputOutput {
           if (choice == 1) {
             System.out.print("Nama file (contoh: abc.txt): ");
             nama = sc.nextLine();
-            out = new PrintWriter(new File("output/" + nama));
+            out = new PrintWriter(new File("test/output/" + nama));
             out.println("Persamaan polinom yang terbentuk: ");
             out.println(m1);
             out.println("\nHasil taksiran polinom: ");
@@ -242,7 +242,7 @@ public class InputOutput {
           if (choice == 1) {
             System.out.print("Nama file (contoh: abc.txt): ");
             nama = sc.nextLine();
-            out = new PrintWriter(new File("output/" + nama));
+            out = new PrintWriter(new File("test/output/" + nama));
             out.println("Persamaan regresi yang terbentuk: ");
             out.println(m1);
             out.println();
@@ -266,7 +266,7 @@ public class InputOutput {
           if (choice == 1) {
             System.out.print("Nama file (contoh: abc.txt): ");
             nama = sc.nextLine();
-            out = new PrintWriter(new File("output/" + nama));
+            out = new PrintWriter(new File("test/output/" + nama));
             for (int i = 0; i < N; i++) {
               out.println("X" + (i + 1) + " = " + Eq[i]);
             }
@@ -289,7 +289,7 @@ public class InputOutput {
           if (choice == 1) {
             System.out.print("Nama file (contoh: abc.txt): ");
             nama = sc.nextLine();
-            out = new PrintWriter(new File("output/" + nama));
+            out = new PrintWriter(new File("test/output/" + nama));
             out.write(m);
             out.close();
           }
