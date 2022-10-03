@@ -10,11 +10,13 @@ public class UserInterface {
         System.out.println("Pilih tipe masukan: ");
         System.out.println("1. Keyboard");
         System.out.println("2. File");
-        System.out.print("Pilihan: ");
+        System.out.print(">>> Masukkan pilihan: ");
     }
 
     public static void main(String[] args) {
-        System.out.println("Welcome to our main program!\n");
+        System.out.println("===================================");
+        System.out.println("  Welcome to our main program!\n");
+        System.out.println("===================================");
 
         boolean isRuning = true;
 
@@ -22,7 +24,7 @@ public class UserInterface {
             String message;
             String choice;
             int byk_row, byk_col, tipeInput, n, m;
-            Matrix ab, a, hasilM, k;
+            Matrix ab, a, mHasil, k;
             double hasil;
             InputOutput f;
             String temp;
@@ -31,6 +33,7 @@ public class UserInterface {
 
             System.out.println("MAIN MENU");
             System.out.print("""
+                    -----------------------------
                     1. Sistem Persamaan Linier
                     2. Determinan
                     3. Matriks Balikan
@@ -38,20 +41,23 @@ public class UserInterface {
                     5. Interpolasi Bicubic
                     6. Regresi linier berganda
                     7. Keluar
+                    -----------------------------
                     """);
-            System.out.println("Masukan pilihan: ");
+            System.out.println(">>> Masukkan pilihan: ");
             choice = in.nextLine();
 
             switch (choice) {
                 case "1" -> {
                     System.out.println(" --SISTEM PERSAMAAN LINIER-- ");
                     System.out.print("""
+                            -----------------------------
                             1. Metode Eliminasi Gauss
                             2. Metode Eliminasi Gauss-Jordam
                             3. Metode Matriks Balikan
                             4. Metode Cramer
+                            -----------------------------
                             """);
-                    System.out.println("Masukan pilihan: ");
+                    System.out.println(">>> Masukkan pilihan: ");
                     choice = in.nextLine();
                     if (choice.equals("0")) {
                         break;
@@ -68,7 +74,7 @@ public class UserInterface {
                             ab = new Matrix(byk_row, byk_col);
                             ab.readMatrix();
                         } else {
-                            System.out.print("Masukkan path file: ");
+                            System.out.print(">>> Masukkan path file: ");
                             String path = in.nextLine();
                             f = new InputOutput(path);
                             ab = f.readFile();
@@ -77,15 +83,15 @@ public class UserInterface {
                         System.out.println();
                         switch (choice) {
                             case "1":
-                                hasilM = SPL.getRowEchelon(ab);
-                                hasilM.displayMatrix();
-                                SPL.GaussElimination(hasilM);
+                                mHasil = SPL.getRowEchelon(ab);
+                                mHasil.displayMatrix();
+                                SPL.GaussElimination(mHasil);
                                 break;
 
                             case "2":
-                                hasilM = SPL.getReducedRowEchelon(ab);
-                                hasilM.displayMatrix();
-                                SPL.GaussElimination(hasilM);
+                                mHasil = SPL.elimGaussJordan(ab);
+                                mHasil.displayMatrix();
+                                SPL.GaussElimination(mHasil);
                                 break;
 
                             case "3":
@@ -100,13 +106,13 @@ public class UserInterface {
                                         System.out.println(temp);
                                         InputOutput.saveFile(temp);
                                     } else {
-                                        hasilM = SPL.inverseSPL(ab);
+                                        mHasil = SPL.inverseSPL(ab);
                                         System.out.println("Solusi Inverse: ");
-                                        for (int i = 0; i < hasilM.getRow(); i++) {
-                                            System.out.printf("X" + (i + 1) + " = %.6f", hasilM.getELMT(i, 0));
+                                        for (int i = 0; i < mHasil.getRow(); i++) {
+                                            System.out.printf("X" + (i + 1) + " = %.6f", mHasil.getELMT(i, 0));
                                             System.out.println();
                                         }
-                                        InputOutput.saveFileSPL(hasilM);
+                                        InputOutput.saveFileSPL(mHasil);
                                     }
                                 }
                                 break;
@@ -123,13 +129,13 @@ public class UserInterface {
                                         System.out.println(temp);
                                         InputOutput.saveFile(temp);
                                     } else {
-                                        hasilM = SPL.Cramer(ab);
+                                        mHasil = SPL.Cramer(ab);
                                         System.out.println("Solusi Cramer: ");
-                                        for (int i = 0; i < hasilM.getRow(); i++) {
-                                            System.out.printf("X" + (i + 1) + " = " + hasilM.getELMT(i, 0));
+                                        for (int i = 0; i < mHasil.getRow(); i++) {
+                                            System.out.printf("X" + (i + 1) + " = " + mHasil.getELMT(i, 0));
                                             System.out.println();
                                         }
-                                        InputOutput.saveFileSPL(hasilM);
+                                        InputOutput.saveFileSPL(mHasil);
                                     }
                                 }
                                 break;
@@ -138,7 +144,7 @@ public class UserInterface {
                         System.out.println("Apakah anda ingin keluar?");
                         System.out.println("1. Ya");
                         System.out.println("0. Kembali ke menu utama");
-                        System.out.print("Pilihan: ");
+                        System.out.print(">>> Masukkan pilihan: ");
                         choice = in.nextLine();
 
                         switch (choice) {
@@ -160,7 +166,7 @@ public class UserInterface {
                     System.out.println("1. Metode ekspansi kofaktor");
                     System.out.println("2. Metode reduksi baris");
                     System.out.println("0. Kembali ke menu utama");
-                    System.out.print("Pilihan: ");
+                    System.out.print(">>> Masukkan pilihan: ");
                     choice = in.nextLine();
                     if (choice.equals("0")) {
                         break;
@@ -169,13 +175,13 @@ public class UserInterface {
                         tipeInput = sc.nextInt();
 
                         if (tipeInput == 1) {
-                            System.out.print("Masukkan N: ");
+                            System.out.print(">>> Masukkan N: ");
                             byk_row = sc.nextInt();
                             System.out.println("Matriks: ");
                             a = new Matrix(byk_row, byk_row);
                             a.readMatrix();
                         } else {
-                            System.out.print("Masukkan path file: ");
+                            System.out.print(">>> Masukkan path file: ");
                             String path = in.nextLine();
                             f = new InputOutput(path);
                             a = f.readFile();
@@ -203,7 +209,7 @@ public class UserInterface {
                         System.out.println("Apakah anda ingin keluar?");
                         System.out.println("1. Ya");
                         System.out.println("0. Kembali ke menu utama");
-                        System.out.print("Pilihan: ");
+                        System.out.print(">>> Masukkan pilihan: ");
                         choice = in.nextLine();
 
                         switch (choice) {
@@ -225,7 +231,7 @@ public class UserInterface {
                     System.out.println("1. Metode Gauss-Jordan");
                     System.out.println("2. Metode Adjoint");
                     System.out.println("0. Kembali ke menu utama");
-                    System.out.print("Pilihan: ");
+                    System.out.print(">>> Masukkan pilihan: ");
                     choice = in.nextLine();
                     if (choice.equals("0")) {
                         break;
@@ -234,13 +240,13 @@ public class UserInterface {
                         tipeInput = sc.nextInt();
 
                         if (tipeInput == 1) {
-                            System.out.print("Masukkan N: ");
+                            System.out.print(">>> Masukkan N: ");
                             byk_row = sc.nextInt();
                             System.out.println("Matriks: ");
                             a = new Matrix(byk_row, byk_row);
                             a.readMatrix();
                         } else {
-                            System.out.print("Masukkan path file: ");
+                            System.out.print(">>> Masukkan path file: ");
                             String path = in.nextLine();
                             f = new InputOutput(path);
                             a = f.readFile();
@@ -255,10 +261,10 @@ public class UserInterface {
                                     System.out.println(temp);
                                     InputOutput.saveFile(temp);
                                 } else {
-                                    hasilM = Matrix.findInverseUsingAdjugate(a);
+                                    mHasil = Matrix.findInverseUsingAdjugate(a);
                                     System.out.println("Hasil Inverse Gauss-Jordan: ");
-                                    hasilM.displayMatrix();
-                                    InputOutput.saveFileInverse(hasilM);
+                                    mHasil.displayMatrix();
+                                    InputOutput.saveFileInverse(mHasil);
                                 }
                                 break;
 
@@ -269,10 +275,10 @@ public class UserInterface {
                                     System.out.println(temp);
                                     InputOutput.saveFile(temp);
                                 } else {
-                                    hasilM = Matrix.InverseDgnGauss(a);
+                                    mHasil = Matrix.InverseDgnGauss(a);
                                     System.out.println("Hasil Inverse Adjoint: ");
-                                    hasilM.displayMatrix();
-                                    InputOutput.saveFileInverse(hasilM);
+                                    mHasil.displayMatrix();
+                                    InputOutput.saveFileInverse(mHasil);
                                 }
                                 break;
                         }
@@ -280,7 +286,7 @@ public class UserInterface {
                         System.out.println("Apakah anda ingin keluar?");
                         System.out.println("1. Ya");
                         System.out.println("0. Kembali ke menu utama");
-                        System.out.print("Pilihan: ");
+                        System.out.print("P>>> Masukkan pilihan: ");
                         choice = in.nextLine();
 
                         switch (choice) {
@@ -299,10 +305,10 @@ public class UserInterface {
                 case "4" -> {
                     PolynomialInterpolation.main();
                     System.out.println();
-                    System.out.println("Apakah anda ingin keluar program?");
+                    System.out.println("Apakah anda ingin keluar?");
                     System.out.println("1. Ya");
                     System.out.println("0. Kembali ke menu utama");
-                    System.out.print(">Masukan: ");
+                    System.out.print(">>> Masukkan: ");
                     choice = in.nextLine();
                     switch (choice) {
                         case "1":
@@ -321,7 +327,7 @@ public class UserInterface {
                     System.out.println("Apakah anda ingin keluar?");
                     System.out.println("1. Ya");
                     System.out.println("0. Kembali ke menu utama");
-                    System.out.print("Pilihan: ");
+                    System.out.print(">>> Masukkan pilihan: ");
                     choice = in.nextLine();
                     switch (choice) {
                         case "1":
@@ -338,30 +344,30 @@ public class UserInterface {
                     displayTipeInput();
                     tipeInput = sc.nextInt();
                     if (tipeInput == 1) {
-                        System.out.print("Masukkan jumlah peubah x: ");
+                        System.out.print(">>> Masukkan jumlah peubah x: ");
                         n = sc.nextInt();
-                        System.out.print("Masukkan jumlah data sampel: ");
+                        System.out.print(">>> Masukkan jumlah data sampel: ");
                         m = sc.nextInt();
-                        System.out.println("Masukkan data sampel: ");
+                        System.out.println(">>> Masukkan data sampel: ");
                         a = new Matrix(m, n + 1);
                         a.readMatrix();
-                        System.out.println("Masukkan nilai X yang akan ditaksir: ");
+                        System.out.println(">>> Masukkan nilai X yang akan ditaksir: ");
                         k = new Matrix(1, n);
                         k.readMatrix();
                     } else {
-                        System.out.print("Masukkan path file: ");
+                        System.out.print(">>> Masukkan path file: ");
                         String path = in.nextLine();
                         f = new InputOutput(path);
                         a = f.readFile();
                         k = new Matrix(1, a.getCol() - 1);
-                        System.out.println("Masukkan nilai X yang akan ditaksir: ");
+                        System.out.println(">>> Masukkan nilai X yang akan ditaksir: ");
                         k.readMatrixRegresi(a.getCol() - 1);
                     }
                     RegresiLinear.regresiGandaSPL(a, k);
                     System.out.println("Apakah anda ingin keluar?");
                     System.out.println("1. Ya");
                     System.out.println("0. Kembali ke menu utama");
-                    System.out.print("Pilihan: ");
+                    System.out.print(">>> Masukkan pilihan: ");
                     choice = in.nextLine();
                     switch (choice) {
                         case "1":

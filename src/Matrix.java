@@ -186,19 +186,19 @@ public class Matrix {
     }
 
     public static Matrix createMAug(Matrix koef, Matrix cons) {
-
-        Matrix mAug = new Matrix(koef.getRow(), koef.getCol() + 1);
-    
-        for (int i = 0; i < koef.getRow(); i++) {
-          for (int j = 0; j < mAug.getCol() - 1; j++) {
-            mAug.M[i][j] = mAug.M[i][j];
-          }
+      Matrix mHasil = new Matrix(koef.row, koef.col + 1);
+ 
+      for (int i = 0; i < koef.row; i++) {
+        for (int j = 0; j < mHasil.col - 1; j++) {
+          mHasil.M[i][j] = koef.M[i][j];
         }
-        for (int k = 0; k < mAug.getRow(); k++) {
-            mAug.M[k][mAug.getCol() - 1] = mAug.M[k][0];
-        }
-        return mAug;
+      }
+      for (int k = 0; k < mHasil.row; k++) {
+        mHasil.M[k][mHasil.col - 1] = cons.M[k][0];
+      }
+      return mHasil;
     }
+
     public static Matrix getMConst(Matrix m) {
 
         Matrix mConst = new Matrix(m.row, 1);
@@ -210,10 +210,10 @@ public class Matrix {
         return mConst;
     }
     public static Matrix Multiply(Matrix A, Matrix B) {
-        /*LOCAL DICTIONARY*/
+
         Matrix C;
         int i, j, k;
-        /*ALGORITHM*/
+
         C = new Matrix(A.getRow(), B.getCol());
 
         for (i = 0; i < C.getRow(); i++){
