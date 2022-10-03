@@ -43,7 +43,7 @@ public class RegresiLinear {
       mHasilSPL = SPL.inverseSPL(mHasil);
 
       // rumus polinom Y
-      rumus = "Y = " + mHasilSPL.getELMT(0, 0);
+      rumus = "f(x) = " + mHasilSPL.getELMT(0, 0);
       for (i = 1; i < mHasilSPL.getRow(); i++) {
         rumus += " + " + mHasilSPL.getELMT(i, 0) + " X" + i;
       }
@@ -55,7 +55,7 @@ public class RegresiLinear {
       }
       
       // Output
-      System.out.println("\nPersamaan Regresi yang terbentuk adalah: ");
+      System.out.println("\nPersamaan Regresi yang terbentuk: ");
       System.out.println(rumus);
       System.out.println();
       m = "Hasil taksiran regresi adalah: " + taksiran;
