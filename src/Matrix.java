@@ -47,6 +47,10 @@ public class Matrix {
         }
     }
 
+    public void setRow(int row, double[] data) {
+        this.M[row] = data;
+    }
+
     /* -- IO -- */
     public void readMatrix() {
         /* KAMUS LOKAL */
